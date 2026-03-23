@@ -14,7 +14,7 @@ export default function MercariSettingsPage() {
       </div>
 
       {mockActive && (
-        <div className="glass-card-mid" style={{ padding: 16, marginBottom: 24, border: '1px solid rgba(245,158,11,0.4)', background: 'rgba(245,158,11,0.1)' }}>
+        <div className="glass-card-enhanced" style={{ padding: 16, marginBottom: 24, border: '1px solid rgba(245,158,11,0.4)', background: 'rgba(245,158,11,0.1)' }}>
           <p style={{ color: '#F59E0B', fontSize: 14, fontWeight: 600 }}>モードで動作中</p>
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, marginTop: 4 }}>
             環境変数 USE_MOCK_MERCARI=true が設定されています。
@@ -23,7 +23,7 @@ export default function MercariSettingsPage() {
         </div>
       )}
 
-      <div className="glass-card-mid" style={{ padding: 24, marginBottom: 20 }}>
+      <div className="glass-card-enhanced" style={{ padding: 24, marginBottom: 20 }}>
         <h2 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>連携状態</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
           <span style={{ width: 10, height: 10, borderRadius: '50%', background: mockActive ? '#F59E0B' : 'rgba(255,255,255,0.3)', display: 'inline-block' }} aria-hidden="true" />
@@ -44,7 +44,7 @@ export default function MercariSettingsPage() {
         )}
       </div>
 
-      <div className="glass-card-mid" style={{ padding: 24 }}>
+      <div className="glass-card-enhanced" style={{ padding: 24 }}>
         <h2 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>API審査について</h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.7 }}>
           メルカリShops APIはパートナー申請が必要です。審査期間は通常2〜4週間です。

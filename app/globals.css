@@ -192,8 +192,73 @@ input[type="text"]::placeholder {
   border-radius: 3px;
 }
 
+/* スキップナビゲーション（キーボードアクセシビリティ） */
+.skip-nav {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  padding: 8px 16px;
+  background: #00B4D8;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top 0.1s;
+}
+
+.skip-nav:focus {
+  top: 16px;
+}
+
 /* フォーカスリング */
 :focus-visible {
   outline: 2px solid #00B4D8;
   outline-offset: 2px;
+}
+
+/* ボタンフォーカス強化 */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible {
+  outline: 3px solid #00B4D8;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(0, 180, 216, 0.2);
+}
+
+/* テーブル行ホバー */
+tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ガラスカード インタラクティブ強化 */
+a.glass-card-enhanced:hover,
+button.glass-card-enhanced:hover {
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border-color: rgba(0, 180, 216, 0.4);
+}
+
+/* ハイコントラストモード対応 */
+@media (prefers-contrast: high) {
+  .glass-card-enhanced {
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+  .btn-primary {
+    border: 2px solid white;
+  }
+  .btn-secondary {
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* リデュースモーション対応 */
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary,
+  .btn-secondary,
+  .glass-card-enhanced {
+    transition: none;
+  }
+  .animate-sync {
+    animation: none;
+  }
 }

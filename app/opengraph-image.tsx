@@ -75,9 +75,20 @@ export default function OGImage() {
             color: 'white',
             fontSize: 20,
             fontWeight: 600,
+            marginBottom: '24px',
           }}
         >
           14日間無料トライアル
+        </div>
+
+        {/* URL */}
+        <div
+          style={{
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: 16,
+          }}
+        >
+          merfreee.vercel.app
         </div>
       </div>
     ),

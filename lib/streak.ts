@@ -90,12 +90,12 @@ export function updateStreak(key: string): StreakData {
   return updated;
 }
 
-/** ストリークマイルストーンメッセージを取得 */
+/** ストリークマイルストーンメッセージを取得（Webサービス向け） */
 export function getStreakMilestoneMessage(streak: number): string | null {
-  if (streak === 3) return "3日連続！調子いいね！";
-  if (streak === 7) return "7日連続達成！すごい！";
-  if (streak === 14) return "2週間連続！";
-  if (streak === 30) return "30日連続！レジェンド！";
+  if (streak === 3) return "3日連続ログイン！";
+  if (streak === 7) return "7日連続達成！週1記帳ゼロ！";
+  if (streak === 14) return "2週間連続！記帳自動化が習慣に！";
+  if (streak === 30) return "30日連続！完全自動化マスター！";
   return null;
 }
 

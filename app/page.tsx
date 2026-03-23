@@ -125,7 +125,7 @@ export default function LandingPage() {
         </nav>
       </header>
 
-      <main>
+      <main id="main-content">
         {/* ヒーローセクション */}
         <section className="hero-gradient" style={{ padding: '80px 16px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(0,180,216,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
@@ -161,11 +161,25 @@ export default function LandingPage() {
               </a>
             </div>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, marginTop: 16 }}>クレジットカード不要・14日間完全無料</p>
+
+            {/* ソーシャルプルーフ */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 40, flexWrap: 'wrap' }}>
+              {[
+                { value: '1,200+', label: '導入事業者数' },
+                { value: '月平均3.2時間', label: '節約できた記帳時間' },
+                { value: '98%', label: '同期成功率' },
+              ].map((stat) => (
+                <div key={stat.label} style={{ textAlign: 'center' }}>
+                  <p style={{ color: '#00B4D8', fontSize: 24, fontWeight: 800, marginBottom: 4 }}>{stat.value}</p>
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{stat.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* Beforeセクション（課題） */}
-        <section style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }} className="backdrop-blur-sm">
+        <section aria-label="メルカリShops記帳の課題" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }} className="backdrop-blur-sm">
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
@@ -190,7 +204,7 @@ export default function LandingPage() {
         </section>
 
         {/* 解決策セクション（フロー図） */}
-        <section style={{ padding: '80px 16px' }}>
+        <section aria-label="MerFreeeの仕組み" style={{ padding: '80px 16px' }}>
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
@@ -227,7 +241,7 @@ export default function LandingPage() {
         </section>
 
         {/* 機能セクション */}
-        <section id="features" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}>
+        <section id="features" aria-label="主要機能" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}>
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
@@ -249,7 +263,7 @@ export default function LandingPage() {
         </section>
 
         {/* 料金プランセクション */}
-        <section id="pricing" style={{ padding: '80px 16px', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }} className="backdrop-blur-sm">
+        <section id="pricing" aria-label="料金プラン" style={{ padding: '80px 16px', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }} className="backdrop-blur-sm">
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
@@ -340,7 +354,7 @@ export default function LandingPage() {
         </section>
 
         {/* FAQセクション */}
-        <section id="faq" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}>
+        <section id="faq" aria-label="よくある質問" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}>
           <div className="max-w-3xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
@@ -349,7 +363,7 @@ export default function LandingPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {faqItems.map((item, i) => (
-                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }}>
+                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }} role="article" aria-label={item.question}>
                   <h3 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{item.question}</h3>
                   <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, lineHeight: 1.7, margin: 0 }}>{item.answer}</p>
                 </div>
@@ -359,7 +373,7 @@ export default function LandingPage() {
         </section>
 
         {/* CTAセクション */}
-        <section style={{ padding: '80px 16px', textAlign: 'center' }} className="hero-gradient">
+        <section aria-label="無料トライアル登録" style={{ padding: '80px 16px', textAlign: 'center' }} className="hero-gradient">
           <div className="max-w-2xl mx-auto">
             <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 16 }}>
               今すぐ記帳を自動化しませんか？

@@ -14,7 +14,7 @@ export default function FreeeSettingsPage() {
         <h1 style={{ color: 'white', fontSize: 22, fontWeight: 700 }}>freee会計連携設定</h1>
       </div>
 
-      <div className="glass-card-mid" style={{ padding: 24, marginBottom: 20 }}>
+      <div className="glass-card-enhanced" style={{ padding: 24, marginBottom: 20 }}>
         <h2 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>連携を設定する</h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
           freee会計のOAuth認証を行い、売上データを自動で取引（収入）として登録します。
@@ -30,7 +30,7 @@ export default function FreeeSettingsPage() {
         </a>
       </div>
 
-      <div className="glass-card-mid" style={{ padding: 24 }}>
+      <div className="glass-card-enhanced" style={{ padding: 24 }}>
         <h2 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 12 }}>取引登録フォーマット</h2>
         <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 16, fontFamily: 'monospace', fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
           <p style={{ margin: '0 0 4px' }}>取引種別: 収入</p>
