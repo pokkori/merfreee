@@ -177,7 +177,7 @@ export default function LandingPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
               {problems.map((p, i) => (
-                <div key={i} className="glass-card-enhanced" style={{ padding: 24 }}>
+                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }}>
                   <div style={{ width: 48, height: 48, background: 'rgba(239,68,68,0.2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
                     <p.icon aria-hidden="true" style={{ width: 24, height: 24, color: '#EF4444' }} />
                   </div>
@@ -209,7 +209,7 @@ export default function LandingPage() {
                 { label: '弥生 / freee', sub: '仕訳・取引登録完了', color: '#0A6EBD' },
               ].map((step, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                  <div className="glass-card-enhanced" style={{ padding: '20px 24px', textAlign: 'center', minWidth: 140, transform: step.isCenter ? 'scale(1.05)' : undefined, border: step.isCenter ? `2px solid ${step.color}` : undefined }}>
+                  <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: '20px 24px', textAlign: 'center', minWidth: 140, transform: step.isCenter ? 'scale(1.05)' : undefined, border: step.isCenter ? `2px solid ${step.color}` : undefined }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: step.color, margin: '0 auto 8px', boxShadow: `0 0 12px ${step.color}` }} />
                     <p style={{ color: 'white', fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{step.label}</p>
                     <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{step.sub}</p>
@@ -236,7 +236,7 @@ export default function LandingPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
               {features.map((f, i) => (
-                <div key={i} className="glass-card-enhanced" style={{ padding: 24 }}>
+                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }}>
                   <div style={{ width: 48, height: 48, background: 'rgba(0,180,216,0.2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
                     <f.icon aria-hidden="true" style={{ width: 24, height: 24, color: '#00B4D8' }} />
                   </div>
@@ -259,7 +259,7 @@ export default function LandingPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24 }}>
               {/* Starterプラン */}
-              <div className="glass-card-enhanced" style={{ padding: 28 }}>
+              <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 28 }}>
                 <h3 style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Starter</h3>
                 <div style={{ marginBottom: 16 }}>
                   <span style={{ color: 'white', fontSize: 36, fontWeight: 800 }}>980</span>
@@ -284,7 +284,7 @@ export default function LandingPage() {
               </div>
 
               {/* Standardプラン（おすすめ） */}
-              <div className="glass-card-enhanced" style={{ padding: 28, border: '2px solid #00B4D8', position: 'relative' }}>
+              <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 28, border: '2px solid #00B4D8', position: 'relative' }}>
                 <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: '#00B4D8', color: 'white', fontSize: 12, fontWeight: 700, padding: '3px 12px', borderRadius: 12 }}>
                   最もご利用多数
                 </div>
@@ -312,7 +312,7 @@ export default function LandingPage() {
               </div>
 
               {/* Proプラン */}
-              <div className="glass-card-enhanced" style={{ padding: 28 }}>
+              <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 28 }}>
                 <h3 style={{ color: '#E85D04', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Pro</h3>
                 <div style={{ marginBottom: 16 }}>
                   <span style={{ color: 'white', fontSize: 36, fontWeight: 800 }}>4,980</span>
@@ -349,7 +349,7 @@ export default function LandingPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {faqItems.map((item, i) => (
-                <div key={i} className="glass-card-enhanced" style={{ padding: 24 }}>
+                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }}>
                   <h3 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{item.question}</h3>
                   <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, lineHeight: 1.7, margin: 0 }}>{item.answer}</p>
                 </div>

@@ -70,7 +70,7 @@ export default function DashboardPage() {
 
       <div style={{ marginTop: 32 }}>
         <h2 style={{ color: 'white', fontSize: 18, fontWeight: 600, marginBottom: 16 }}>最近の取引</h2>
-        <div className="glass-card-enhanced" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 0, overflow: 'hidden' }}>
           <table
             style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}
             role="table"
