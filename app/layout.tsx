@@ -1,6 +1,24 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MerFreee",
+  "description": "メルカリShopsの売上を弥生・freeeに自動連携。インボイス対応の適格請求書を自動生成。記帳作業ゼロへ。",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://merfreee.vercel.app",
+  "offers": {
+    "@type": "Offer",
+    "price": "980",
+    "priceCurrency": "JPY",
+    "description": "月額980円（14日間無料トライアルあり）"
+  },
+  "inLanguage": "ja",
+  "author": { "@type": "Organization", "name": "MerFreee" }
+};
+
 export const metadata: Metadata = {
   title: 'MerFreee | メルカリShops × 弥生・freee 自動連携',
   description: 'メルカリShopsの売上を弥生・freeeに自動連携。インボイス対応の適格請求書を自動生成。記帳作業ゼロへ。月額980円から。',
@@ -35,6 +53,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className="h-full">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
