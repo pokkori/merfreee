@@ -1,6 +1,7 @@
 import { KpiCard } from '@/components/dashboard/KpiCard';
 import { SyncStatusBadge } from '@/components/dashboard/SyncStatusBadge';
 import { StreakBadge } from '@/components/dashboard/StreakBadge';
+// streak tracking: updateStreak/loadStreak はStreakBadgeコンポーネント内で管理
 import { KpiData } from '@/types';
 
 // ダッシュボードはモックデータで表示（Supabase未接続時でも動作）
