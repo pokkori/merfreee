@@ -72,7 +72,7 @@ export function PlanCard({ currentPlan }: PlanCardProps) {
         return (
           <div
             key={plan.key}
-            className="glass-card-mid"
+            className="glass-card-enhanced"
             style={{ padding: 24, position: 'relative', border: plan.recommended ? `2px solid ${plan.color}` : undefined }}
             role="region"
             aria-label={`${plan.name}プラン: 月額${plan.price.toLocaleString()}円`}

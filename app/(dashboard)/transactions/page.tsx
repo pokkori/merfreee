@@ -10,7 +10,7 @@ export default function TransactionsPage() {
         </p>
       </div>
 
-      <div className="glass-card-mid" style={{ padding: 0, overflow: 'auto' }}>
+      <div className="glass-card-enhanced" style={{ padding: 0, overflow: 'auto' }}>
         <table
           style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14, minWidth: 700 }}
           role="table"

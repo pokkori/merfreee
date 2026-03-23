@@ -1,5 +1,6 @@
 import { KpiCard } from '@/components/dashboard/KpiCard';
 import { SyncStatusBadge } from '@/components/dashboard/SyncStatusBadge';
+import { StreakBadge } from '@/components/dashboard/StreakBadge';
 import { KpiData } from '@/types';
 
 // ダッシュボードはモックデータで表示（Supabase未接続時でも動作）
@@ -19,6 +20,9 @@ export default function DashboardPage() {
         <div>
           <h1 style={{ color: 'white', fontSize: 24, fontWeight: 700, marginBottom: 4 }}>ダッシュボード</h1>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>2026年3月の売上サマリー</p>
+          <div style={{ marginTop: 8 }}>
+            <StreakBadge />
+          </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <SyncStatusBadge lastSyncedAt="2026-03-23T00:00:00Z" isActive={true} />
@@ -39,7 +43,7 @@ export default function DashboardPage() {
 
       <div style={{ marginTop: 32 }}>
         <h2 style={{ color: 'white', fontSize: 18, fontWeight: 600, marginBottom: 16 }}>最近の取引</h2>
-        <div className="glass-card-mid" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="glass-card-enhanced" style={{ padding: 0, overflow: 'hidden' }}>
           <table
             style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}
             role="table"

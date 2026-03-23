@@ -47,7 +47,7 @@ export default function InvoicesPage() {
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>インボイス制度対応の適格請求書をPDFで発行できます</p>
       </div>
 
-      <div className="glass-card-mid" style={{ padding: 24, marginBottom: 24 }}>
+      <div className="glass-card-enhanced" style={{ padding: 24, marginBottom: 24 }}>
         <h2 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>請求書を発行する</h2>
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', flexWrap: 'wrap' }}>
           <div>
@@ -90,7 +90,7 @@ export default function InvoicesPage() {
         )}
       </div>
 
-      <div className="glass-card-mid" style={{ padding: 24 }}>
+      <div className="glass-card-enhanced" style={{ padding: 24 }}>
         <h2 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 16 }}>発行済み請求書</h2>
         <div
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0', color: 'rgba(255,255,255,0.3)' }}

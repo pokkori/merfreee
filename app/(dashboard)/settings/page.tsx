@@ -35,7 +35,7 @@ export default function SettingsPage() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {integrationLinks.map((item) => (
-          <div key={item.href} className="glass-card-mid" style={{ padding: 20 }}>
+          <div key={item.href} className="glass-card-enhanced" style={{ padding: 20 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                 <div style={{ width: 44, height: 44, background: 'rgba(0,180,216,0.2)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

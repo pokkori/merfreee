@@ -52,7 +52,7 @@ export function KpiCard({ data }: KpiCardProps) {
         {kpis.map((kpi, i) => (
           <div
             key={i}
-            className="glass-card-mid"
+            className="glass-card-enhanced"
             style={{ padding: '20px 24px' }}
             role="region"
             aria-label={kpi.label}

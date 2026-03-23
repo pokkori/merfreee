@@ -41,7 +41,7 @@ export default function LoginPage() {
       className="hero-gradient"
       style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
     >
-      <div className="glass-card-mid" style={{ width: '100%', maxWidth: 420, padding: 40 }}>
+      <div className="glass-card-enhanced" style={{ width: '100%', maxWidth: 420, padding: 40 }}>
         {/* ロゴ */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
