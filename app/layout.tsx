@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MerFreee | メルカリShops売上を会計ソフトに自動連携',
     description: 'インボイス対応・弥生・freee両対応・メルカリShops専用の会計自動化SaaS',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'MerFreee' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'MerFreee' }],
     locale: 'ja_JP',
     type: 'website',
     siteName: 'MerFreee',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'MerFreee | メルカリShops × 弥生・freee 自動連携',
     description: 'インボイス対応・弥生・freee両対応の会計自動化SaaS',
-    images: ['/og.png'],
+    images: ['/opengraph-image'],
   },
   alternates: { canonical: 'https://merfreee.vercel.app' },
   robots: {
