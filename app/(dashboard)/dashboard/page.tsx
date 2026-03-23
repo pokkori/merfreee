@@ -24,8 +24,35 @@ export default function DashboardPage() {
             <StreakBadge />
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
           <SyncStatusBadge lastSyncedAt="2026-03-23T00:00:00Z" isActive={true} />
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("MerFreeeでメルカリShops×会計連携を自動化中！インボイス対応PDFも自動生成 #MerFreee #メルカリShops https://merfreee.vercel.app")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="MerFreeeを使ったことをXにシェアする"
+            style={{
+              fontSize: 12,
+              padding: '6px 14px',
+              background: 'rgba(0,0,0,0.7)',
+              color: 'white',
+              borderRadius: 8,
+              textDecoration: 'none',
+              border: '1px solid rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+              transition: 'background 0.2s',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              minHeight: 44,
+            }}
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" width={14} height={14} fill="white">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+            </svg>
+            Xでシェア
+          </a>
           <form action="/api/sync" method="POST">
             <button
               type="submit"

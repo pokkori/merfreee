@@ -389,22 +389,50 @@ export default function LandingPage() {
               </div>
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, fontWeight: 600 }}>MerFreee</span>
             </div>
-            <nav aria-label="フッターナビゲーション" style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-              {[
-                { href: '/legal/privacy', label: 'プライバシーポリシー' },
-                { href: '/legal/terms', label: '利用規約' },
-                { href: '/legal/tokusho', label: '特定商取引法に基づく表記' },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-label={link.label}
-                  style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, textDecoration: 'none' }}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("メルカリShopsの記帳が全自動に！インボイス対応・弥生・freee両対応のMerFreeeを試してみた #MerFreee #メルカリShops https://merfreee.vercel.app")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="MerFreeeをXでシェアする"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  color: 'rgba(255,255,255,0.7)',
+                  fontSize: 12,
+                  textDecoration: 'none',
+                  padding: '6px 12px',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  borderRadius: 8,
+                  background: 'rgba(0,0,0,0.3)',
+                  backdropFilter: 'blur(4px)',
+                  WebkitBackdropFilter: 'blur(4px)',
+                  minHeight: 44,
+                }}
+              >
+                <svg aria-hidden="true" viewBox="0 0 24 24" width={13} height={13} fill="rgba(255,255,255,0.7)">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+                </svg>
+                Xでシェア
+              </a>
+              <nav aria-label="フッターナビゲーション" style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                {[
+                  { href: '/legal/privacy', label: 'プライバシーポリシー' },
+                  { href: '/legal/terms', label: '利用規約' },
+                  { href: '/legal/tokusho', label: '特定商取引法に基づく表記' },
+                ].map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-label={link.label}
+                    style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, textDecoration: 'none' }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
           </div>
           <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 20, textAlign: 'center' }}>
             (c) 2026 MerFreee. All rights reserved.
