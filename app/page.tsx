@@ -97,7 +97,7 @@ export default function LandingPage() {
       />
 
       {/* ナビゲーション */}
-      <header style={{ background: 'rgba(3,4,94,0.95)', borderBottom: '1px solid rgba(255,255,255,0.1)' }} className="sticky top-0 z-50">
+      <header style={{ background: 'rgba(3,4,94,0.85)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.1)' }} className="sticky top-0 z-50 backdrop-blur-md">
         <nav className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between" aria-label="メインナビゲーション">
           <div className="flex items-center gap-2">
             <div style={{ width: 32, height: 32, background: '#E85D04', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -165,7 +165,7 @@ export default function LandingPage() {
         </section>
 
         {/* Beforeセクション（課題） */}
-        <section style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}>
+        <section style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }} className="backdrop-blur-sm">
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
@@ -249,7 +249,7 @@ export default function LandingPage() {
         </section>
 
         {/* 料金プランセクション */}
-        <section id="pricing" style={{ padding: '80px 16px' }}>
+        <section id="pricing" style={{ padding: '80px 16px', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }} className="backdrop-blur-sm">
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
