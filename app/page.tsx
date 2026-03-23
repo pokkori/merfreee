@@ -97,7 +97,7 @@ export default function LandingPage() {
       />
 
       {/* ナビゲーション */}
-      <header style={{ background: 'rgba(3,4,94,0.85)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.1)' }} className="sticky top-0 z-50 backdrop-blur-md">
+      <header aria-label="MerFreeeメインナビゲーション" style={{ background: 'rgba(3,4,94,0.85)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.1)' }} className="sticky top-0 z-50 backdrop-blur-md">
         <nav className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between" aria-label="メインナビゲーション">
           <div className="flex items-center gap-2">
             <div style={{ width: 32, height: 32, background: '#E85D04', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
