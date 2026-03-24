@@ -3,7 +3,7 @@ import { StreakBadge } from '@/components/dashboard/StreakBadge';
 import { ShareProfitButton } from '@/components/dashboard/ShareProfitButton';
 import { TreasureItem, SavedItem } from '@/types';
 
-// モックデータ（Supabase未接続時でも動作）
+// モックデータ（Supabase未接続時フォールバック）
 const MOCK_TREASURE_ITEMS: TreasureItem[] = [
   {
     id: '1',
@@ -85,18 +85,45 @@ const MOCK_TREASURE_ITEMS: TreasureItem[] = [
 
 const MOCK_SAVED_ITEMS: SavedItem[] = [];
 
-export default function DashboardPage() {
+async function fetchTreasureItems(): Promise<TreasureItem[]> {
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !key) return MOCK_TREASURE_ITEMS;
+
+    // 動的インポートでサーバー専用クライアントを使用
+    const { createServerClient } = await import('@/lib/supabase/server');
+    const supabase = createServerClient();
+
+    const { data, error } = await supabase
+      .from('treasure_items')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    if (error || !data || data.length === 0) {
+      return MOCK_TREASURE_ITEMS;
+    }
+
+    return data as TreasureItem[];
+  } catch {
+    // Supabase未接続時はMOCKデータをフォールバック
+    return MOCK_TREASURE_ITEMS;
+  }
+}
+
+const CATEGORY_TABS = [
+  { id: 'all', label: 'すべて' },
+  { id: 'anime_figures', label: 'アニメフィギュア' },
+  { id: 'vintage_cameras', label: 'カメラ' },
+  { id: 'game_retro', label: 'レトロゲーム' },
+  { id: 'vinyl_records', label: 'レコード' },
+];
+
+export default async function DashboardPage() {
   const streakCount = 3;
   const totalPoints = 80;
-  const items = MOCK_TREASURE_ITEMS;
-
-  const CATEGORY_TABS = [
-    { id: 'all', label: 'すべて' },
-    { id: 'anime_figures', label: 'アニメフィギュア' },
-    { id: 'vintage_cameras', label: 'カメラ' },
-    { id: 'game_retro', label: 'レトロゲーム' },
-    { id: 'vinyl_records', label: 'レコード' },
-  ];
+  const items = await fetchTreasureItems();
 
   return (
     <div>

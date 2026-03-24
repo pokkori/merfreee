@@ -20,14 +20,20 @@ export function getStreak(): number {
 // クライアントサイド専用: localStorage でポイントを取得
 export function getLocalPoints(): number {
   if (typeof window === 'undefined') return 0;
-  const data = JSON.parse(localStorage.getItem('ecross_streak') || '{"count":0,"lastVisit":"","points":0}');
+  // バグA修正: getStreak()を呼ばずにストレージを再読み込みして二重加算を防ぐ
+  const today = new Date().toDateString();
+  // まず getStreak() でストリーク更新（lastVisit を今日に更新する）
   const streak = getStreak();
-  let points = data.points ?? 0;
-  if (data.lastVisit !== new Date().toDateString()) {
+  // getStreak() 呼び出し後のストレージを再読み込み
+  const freshData = JSON.parse(localStorage.getItem('ecross_streak') || '{"count":0,"lastVisit":"","points":0}');
+  let points = freshData.points ?? 0;
+  // lastVisit が今日でない場合のみポイント加算（getStreak()で今日に更新済みなので、基本ここには来ない）
+  // 念のため: pointsが未付与の場合のフォールバック
+  if (freshData.pointsLastAwarded !== today) {
     points += 10;
     if (streak === 7) points += 50;
     if (streak === 30) points += 200;
-    const updated = { ...data, points, lastVisit: new Date().toDateString() };
+    const updated = { ...freshData, points, pointsLastAwarded: today };
     localStorage.setItem('ecross_streak', JSON.stringify(updated));
   }
   return points;
@@ -131,9 +137,10 @@ export async function getStreakStatus(
   const totalPoints = (user?.total_points as number) ?? 0;
 
   // next_bonus_at: 次のボーナス付与まで何日か
+  // バグB修正: streakCount >= 30 の場合は 30 - (streakCount % 30) が正しい
   let nextBonusAt = 7;
   if (streakCount >= 30) {
-    nextBonusAt = 30;
+    nextBonusAt = 30 - (streakCount % 30);
   } else if (streakCount >= 7) {
     nextBonusAt = 30 - streakCount;
   } else {

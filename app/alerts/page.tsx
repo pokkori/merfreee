@@ -22,8 +22,10 @@ export default function AlertsPage() {
   const [saved, setSaved] = useState(false);
 
   const [slackWebhook, setSlackWebhook] = useState('');
-  const [lineToken, setLineToken] = useState('');
+  const [alertEmail, setAlertEmail] = useState('');
   const [profitThreshold, setProfitThreshold] = useState<number>(20);
+  const [testSending, setTestSending] = useState(false);
+  const [testResult, setTestResult] = useState<'success' | 'error' | null>(null);
 
   useEffect(() => {
     async function checkAuth() {
@@ -40,13 +42,13 @@ export default function AlertsPage() {
       // 既存設定を取得
       const { data } = await supabase
         .from('user_alerts')
-        .select('slack_webhook_url, line_notify_token, profit_threshold_pct')
+        .select('slack_webhook_url, alert_email, profit_threshold_pct')
         .eq('user_id', session.user.id)
         .single();
 
       if (data) {
         setSlackWebhook(data.slack_webhook_url ?? '');
-        setLineToken(data.line_notify_token ?? '');
+        setAlertEmail(data.alert_email ?? '');
         setProfitThreshold(data.profit_threshold_pct ?? 20);
       }
       setLoading(false);
@@ -64,7 +66,7 @@ export default function AlertsPage() {
       {
         user_id: userId,
         slack_webhook_url: slackWebhook || null,
-        line_notify_token: lineToken || null,
+        alert_email: alertEmail || null,
         profit_threshold_pct: profitThreshold,
         updated_at: new Date().toISOString(),
       },
@@ -133,7 +135,7 @@ export default function AlertsPage() {
             価格変動アラート設定
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14 }}>
-            条件に一致したお宝商品を即座にSlackやLINEで通知します
+            条件に一致したお宝商品を即座にSlackやメールで通知します
           </p>
         </div>
 
@@ -192,10 +194,10 @@ export default function AlertsPage() {
             />
           </div>
 
-          {/* LINE Notify トークン */}
+          {/* アラートメール送信先 */}
           <div>
             <label
-              htmlFor="line-token"
+              htmlFor="alert-email"
               style={{
                 display: 'block',
                 color: 'rgba(255,255,255,0.8)',
@@ -204,18 +206,18 @@ export default function AlertsPage() {
                 marginBottom: 6,
               }}
             >
-              LINE Notify トークン
+              アラートメール送信先
             </label>
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginBottom: 8 }}>
-              LINE Notify のマイページでトークンを発行してください
+              設定した条件を満たす物件が見つかった際にメールでお知らせします
             </p>
             <input
-              id="line-token"
-              type="password"
-              value={lineToken}
-              onChange={(e) => setLineToken(e.target.value)}
-              aria-label="LINE Notify トークンを入力"
-              placeholder="LINE Notifyアクセストークン"
+              id="alert-email"
+              type="email"
+              value={alertEmail}
+              onChange={(e) => setAlertEmail(e.target.value)}
+              aria-label="アラートメール送信先メールアドレスを入力"
+              placeholder="example@email.com"
               style={{
                 width: '100%',
                 background: 'rgba(255,255,255,0.07)',
@@ -229,6 +231,63 @@ export default function AlertsPage() {
                 minHeight: 44,
               }}
             />
+          </div>
+
+          {/* Slackテスト通知ボタン */}
+          <div>
+            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 600, marginBottom: 6 }}>
+              Slack接続テスト
+            </p>
+            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginBottom: 10 }}>
+              Webhook URLが入力済みの場合、テスト通知を送信して接続を確認できます
+            </p>
+            <button
+              type="button"
+              disabled={!slackWebhook || testSending}
+              aria-label="Slackにテスト通知を送る"
+              onClick={async () => {
+                setTestSending(true);
+                setTestResult(null);
+                try {
+                  const res = await fetch('/api/alerts/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slackWebhookUrl: slackWebhook }),
+                  });
+                  setTestResult(res.ok ? 'success' : 'error');
+                } catch {
+                  setTestResult('error');
+                } finally {
+                  setTestSending(false);
+                  setTimeout(() => setTestResult(null), 5000);
+                }
+              }}
+              style={{
+                background: !slackWebhook ? 'rgba(255,255,255,0.1)' : 'rgba(52,211,153,0.15)',
+                color: !slackWebhook ? 'rgba(255,255,255,0.3)' : '#34D399',
+                border: `1px solid ${!slackWebhook ? 'rgba(255,255,255,0.1)' : 'rgba(52,211,153,0.4)'}`,
+                borderRadius: 8,
+                padding: '10px 20px',
+                fontSize: 14,
+                fontWeight: 600,
+                minHeight: 44,
+                cursor: !slackWebhook || testSending ? 'not-allowed' : 'pointer',
+                opacity: testSending ? 0.7 : 1,
+                transition: 'all 0.2s',
+              }}
+            >
+              {testSending ? '送信中...' : 'Slackにテスト通知を送る'}
+            </button>
+            {testResult === 'success' && (
+              <p style={{ color: '#34D399', fontSize: 13, marginTop: 8 }}>
+                テスト通知を送信しました
+              </p>
+            )}
+            {testResult === 'error' && (
+              <p style={{ color: '#EF4444', fontSize: 13, marginTop: 8 }}>
+                送信に失敗しました。Webhook URLを確認してください
+              </p>
+            )}
           </div>
 
           {/* 利益率閾値 */}
