@@ -9,5 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: 'https://ecross-arbitrage.vercel.app/legal/terms', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
     { url: 'https://ecross-arbitrage.vercel.app/legal/tokusho', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
     { url: 'https://ecross-arbitrage.vercel.app/alerts', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: 'https://ecross-arbitrage.vercel.app/dashboard', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   ];
 }

@@ -1,5 +1,5 @@
 import { TreasureCard } from '@/components/dashboard/TreasureCard';
-import { StreakBadge } from '@/components/dashboard/StreakBadge';
+import { DynamicStreakBadge } from '@/components/dashboard/DynamicStreakBadge';
 import { ShareProfitButton } from '@/components/dashboard/ShareProfitButton';
 import { TreasureItem, SavedItem } from '@/types';
 
@@ -121,8 +121,6 @@ const CATEGORY_TABS = [
 ];
 
 export default async function DashboardPage() {
-  const streakCount = 3;
-  const totalPoints = 80;
   const items = await fetchTreasureItems();
 
   return (
@@ -146,7 +144,7 @@ export default async function DashboardPage() {
             毎日朝7時に新着お宝リストを更新
           </p>
           <div style={{ marginTop: 8 }}>
-            <StreakBadge streakCount={streakCount} totalPoints={totalPoints} />
+            <DynamicStreakBadge />
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
