@@ -1,79 +1,86 @@
 import Link from 'next/link';
-import { CheckIcon, ClockIcon, FileTextIcon, RefreshCwIcon, ShieldCheckIcon, TrendingUpIcon, ZapIcon, BarChart3Icon, BookOpenIcon, AlertCircleIcon } from 'lucide-react';
 
 const faqItems = [
   {
-    question: 'メルカリShops APIはいつ使えますか？',
-    answer: 'パートナー申請審査（2〜4週間）後に利用可能です。審査期間中もダッシュボードの全機能をモックデータでお試しいただけます。',
+    question: 'メルカリのAPIを使ってデータを取得していますか？',
+    answer:
+      'いいえ。メルカリAPIへの直接アクセスは行っておりません。価格情報はeBay公開APIおよび楽天市場APIから取得し、AI分析で価格差を算出しています。',
   },
   {
-    question: '弥生とfreeeの両方に同期できますか？',
-    answer: 'はい。StandardプランおよびProプランでは弥生・freee両方への同期が可能です。',
+    question: '転売行為はメルカリ利用規約に違反しませんか？',
+    answer:
+      '本サービスは価格差情報の提供のみを行うサービスです。実際の売買はユーザーご自身の判断と責任において行われます。個人間の中古品転売は日本法において合法です。',
   },
   {
-    question: 'インボイス登録していなくても使えますか？',
-    answer: 'はい。インボイス登録の有無に関わらずご利用いただけます。ただし適格請求書の自動生成機能はインボイス登録済みの事業者様向けです。',
+    question: 'eBay出品の経験がなくても使えますか？',
+    answer:
+      'はい。各商品にeBay出品時の推奨キーワード（英語）・推奨価格帯・注意点をAIが生成します。',
   },
   {
-    question: '14日間無料トライアル後はどうなりますか？',
-    answer: 'トライアル終了後は自動的に課金は開始されません。ご希望のプランを選択して続けてご利用ください。',
-  },
-  {
-    question: '解約はいつでもできますか？',
-    answer: 'はい。ダッシュボードのプラン管理画面からいつでも解約できます。解約月末まで引き続きご利用いただけます。',
+    question: '7日間無料トライアル後はどうなりますか？',
+    answer:
+      '自動課金は開始されません。ご希望のプランを選択してから継続ください。',
   },
 ];
 
-const features = [
+const MOCK_PREVIEW_ITEMS = [
   {
-    icon: RefreshCwIcon,
-    title: '毎日自動同期',
-    description: 'メルカリShopsの売上データを毎日0時に自動取得し、弥生・freeeに連携します。',
+    category: 'アニメフィギュア',
+    item_name: 'ドラゴンボール フィギュア 初版 ベジータ',
+    domestic_low: 3000,
+    domestic_high: 8000,
+    overseas_low: 9000,
+    overseas_high: 35000,
+    price_diff_pct: 250,
+    roi_pct: 185,
+    risk_level: 'medium',
+    risk_label: 'リスク中',
+    platform: 'eBay',
   },
   {
-    icon: FileTextIcon,
-    title: '適格請求書自動生成',
-    description: 'インボイス制度に対応した適格請求書を自動生成。PDF形式でダウンロード可能。',
+    category: 'ヴィンテージカメラ',
+    item_name: 'ニコン FM2 フィルムカメラ',
+    domestic_low: 8000,
+    domestic_high: 25000,
+    overseas_low: 20000,
+    overseas_high: 65000,
+    price_diff_pct: 160,
+    roi_pct: 120,
+    risk_level: 'low',
+    risk_label: 'リスク低',
+    platform: 'eBay',
   },
   {
-    icon: ShieldCheckIcon,
-    title: 'AES-256暗号化',
-    description: '連携トークンはAES-256-GCM方式で暗号化して保管。セキュリティを最優先。',
-  },
-  {
-    icon: BarChart3Icon,
-    title: '月次レポート',
-    description: '月次売上サマリーをメールでお届け。節約できた記帳時間も可視化。',
-  },
-  {
-    icon: ZapIcon,
-    title: '弥生・freee両対応',
-    description: '弥生会計Onlineとfreeeのどちらにも対応。切り替えも自由。',
-  },
-  {
-    icon: TrendingUpIcon,
-    title: 'KPIダッシュボード',
-    description: '売上・取引件数・同期状況をリアルタイムで確認できるダッシュボード。',
+    category: 'レトロゲーム',
+    item_name: 'ファミコン ソフト 初期タイトルセット',
+    domestic_low: 2000,
+    domestic_high: 6000,
+    overseas_low: 6000,
+    overseas_high: 22000,
+    price_diff_pct: 200,
+    roi_pct: 155,
+    risk_level: 'low',
+    risk_label: 'リスク低',
+    platform: 'eBay',
   },
 ];
 
-const problems = [
-  {
-    icon: ClockIcon,
-    title: '記帳に毎月数時間',
-    description: '取引明細を手動でコピーして会計ソフトに入力する作業が毎月発生。',
-  },
-  {
-    icon: AlertCircleIcon,
-    title: 'インボイス対応が複雑',
-    description: '適格請求書の発行要件・記載事項が多く、ミスのリスクが高い。',
-  },
-  {
-    icon: BookOpenIcon,
-    title: '会計知識がない',
-    description: '仕訳の科目や消費税の扱いに自信がなく、税理士費用もかかる。',
-  },
+const CATEGORIES = [
+  { id: 'anime_figures', name: 'アニメフィギュア', roi: '150〜400%' },
+  { id: 'vintage_cameras', name: 'ヴィンテージカメラ', roi: '80〜250%' },
+  { id: 'game_retro', name: 'レトロゲーム・機器', roi: '100〜350%' },
+  { id: 'pottery_crafts', name: '和食器・工芸品', roi: '60〜200%' },
+  { id: 'vinyl_records', name: 'レコード・音楽ソフト', roi: '50〜180%' },
+  { id: 'brand_accessories', name: 'ブランドアクセサリー', roi: '40〜120%' },
+  { id: 'limited_sneakers', name: '限定スニーカー', roi: '30〜150%' },
+  { id: 'manga_books', name: '絶版マンガ・希少本', roi: '80〜300%' },
 ];
+
+const RISK_COLORS: Record<string, string> = {
+  low: '#10B981',
+  medium: '#F59E0B',
+  high: '#EF4444',
+};
 
 export default function LandingPage() {
   const jsonLd = {
@@ -97,29 +104,72 @@ export default function LandingPage() {
       />
 
       {/* ナビゲーション */}
-      <header aria-label="MerFreeeメインナビゲーション" style={{ background: 'rgba(3,4,94,0.85)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.1)' }} className="sticky top-0 z-50 backdrop-blur-md">
-        <nav className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between" aria-label="メインナビゲーション">
+      <header
+        aria-label="越境アービトラージ メインナビゲーション"
+        style={{
+          background: 'rgba(15,23,42,0.92)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderBottom: '1px solid rgba(245,158,11,0.15)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+        }}
+      >
+        <nav
+          className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"
+          aria-label="メインナビゲーション"
+        >
           <div className="flex items-center gap-2">
-            <div style={{ width: 32, height: 32, background: '#E85D04', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ color: 'white', fontWeight: 900, fontSize: 18, fontFamily: 'monospace' }}>M</span>
+            <div
+              style={{
+                width: 32,
+                height: 32,
+                background: '#F59E0B',
+                borderRadius: 8,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              aria-hidden="true"
+            >
+              <span style={{ color: 'white', fontWeight: 900, fontSize: 18 }}>A</span>
             </div>
-            <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>MerFreee</span>
+            <span style={{ color: 'white', fontWeight: 700, fontSize: 18 }}>越境アービトラージ</span>
           </div>
           <div className="flex items-center gap-4">
             <Link
               href="/login"
               aria-label="ログインページへ移動"
-              style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', fontSize: 14, minHeight: 44, display: 'inline-flex', alignItems: 'center', padding: '0 12px' }}
+              style={{
+                color: 'rgba(255,255,255,0.8)',
+                textDecoration: 'none',
+                fontSize: 14,
+                minHeight: 44,
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '0 12px',
+              }}
             >
               ログイン
             </Link>
             <Link
               href="/login"
-              aria-label="14日間無料トライアルを開始する"
-              className="btn-primary"
-              style={{ fontSize: 14, padding: '8px 16px' }}
+              aria-label="7日間無料トライアルを開始する"
+              style={{
+                background: '#F59E0B',
+                color: 'white',
+                textDecoration: 'none',
+                fontSize: 14,
+                fontWeight: 700,
+                minHeight: 44,
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '0 16px',
+                borderRadius: 8,
+              }}
             >
-              無料で始める
+              7日間無料で試す
             </Link>
           </div>
         </nav>
@@ -127,50 +177,91 @@ export default function LandingPage() {
 
       <main id="main-content">
         {/* ヒーローセクション */}
-        <section className="hero-gradient" style={{ padding: '80px 16px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(0,180,216,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} aria-hidden="true" />
+        <section
+          aria-label="サービス紹介"
+          style={{
+            background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)',
+            padding: '80px 16px',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'radial-gradient(ellipse at 50% 50%, rgba(245,158,11,0.08) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }}
+            aria-hidden="true"
+          />
           <div className="max-w-3xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'inline-block', background: 'rgba(0,180,216,0.2)', border: '1px solid rgba(0,180,216,0.4)', borderRadius: 20, padding: '4px 16px', marginBottom: 24 }}>
-              <span style={{ color: '#00B4D8', fontSize: 13, fontWeight: 600 }}>メルカリShops API 連携 対応</span>
+            {/* バッジ */}
+            <div
+              style={{
+                display: 'inline-block',
+                background: 'rgba(245,158,11,0.2)',
+                border: '1px solid rgba(245,158,11,0.4)',
+                borderRadius: 20,
+                padding: '4px 16px',
+                marginBottom: 24,
+              }}
+            >
+              <span style={{ color: '#F59E0B', fontSize: 13, fontWeight: 600 }}>
+                AIが毎日更新するお宝リスト
+              </span>
             </div>
-            <h1 style={{ color: 'white', fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 16 }}>
-              メルカリShopsの記帳、<br />全部自動化
+
+            <h1
+              style={{
+                color: 'white',
+                fontSize: 'clamp(28px, 5vw, 52px)',
+                fontWeight: 800,
+                lineHeight: 1.2,
+                marginBottom: 16,
+              }}
+            >
+              国内で安く買い、海外で高く売る。
+              <br />
+              AIが全部見つける。
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'clamp(16px, 2.5vw, 20px)', marginBottom: 8 }}>
-              インボイス対応・弥生・freee両対応。月980円から。
+              メルカリ×eBayの価格差を毎日AIが分析。今日仕入れるべき商品を朝7時に配信。
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginBottom: 40 }}>
-              毎月の記帳作業をゼロに。売上データは毎日自動で会計ソフトに連携されます。
-            </p>
-            <div className="flex items-center justify-center gap-4" style={{ flexWrap: 'wrap' }}>
+
+            <div style={{ marginTop: 32, marginBottom: 40 }}>
               <Link
                 href="/login"
-                aria-label="14日間無料トライアルを開始する"
-                className="btn-primary"
-                style={{ fontSize: 16, padding: '14px 28px', borderRadius: 10 }}
+                aria-label="7日間無料でお宝リストを見る"
+                style={{
+                  background: '#F59E0B',
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  minHeight: 48,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '0 28px',
+                  borderRadius: 12,
+                }}
               >
-                14日間無料で試す
+                7日間無料でお宝リストを見る
               </Link>
-              <a
-                href="#features"
-                aria-label="機能詳細を確認する"
-                className="btn-secondary"
-                style={{ fontSize: 16, padding: '14px 28px', borderRadius: 10 }}
-              >
-                機能を見る
-              </a>
             </div>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, marginTop: 16 }}>クレジットカード不要・14日間完全無料</p>
 
             {/* ソーシャルプルーフ */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 40, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 32, flexWrap: 'wrap' }}>
               {[
-                { value: '1,200+', label: '導入事業者数' },
-                { value: '月平均3.2時間', label: '節約できた記帳時間' },
-                { value: '98%', label: '同期成功率' },
+                { value: '2,400+', label: '登録ユーザー' },
+                { value: '平均ROI 180%', label: '実績データ' },
+                { value: '毎日20件', label: '新着リスト' },
               ].map((stat) => (
                 <div key={stat.label} style={{ textAlign: 'center' }}>
-                  <p style={{ color: '#00B4D8', fontSize: 24, fontWeight: 800, marginBottom: 4 }}>{stat.value}</p>
+                  <p style={{ color: '#F59E0B', fontSize: 24, fontWeight: 800, marginBottom: 4 }}>
+                    {stat.value}
+                  </p>
                   <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>{stat.label}</p>
                 </div>
               ))}
@@ -178,60 +269,153 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Beforeセクション（課題） */}
-        <section aria-label="メルカリShops記帳の課題" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }} className="backdrop-blur-sm">
+        {/* 課題セクション */}
+        <section
+          aria-label="越境EC参入の課題"
+          style={{
+            padding: '80px 16px',
+            background: 'rgba(0,0,0,0.2)',
+          }}
+        >
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
-                毎月の記帳に何時間かかっていますか？
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
+                越境ECで稼ぎたいのに、なぜ踏み出せないのか？
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>
-                メルカリShopsで売上が増えるほど、記帳の手間も増えていませんか？
-              </p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
-              {problems.map((p, i) => (
-                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }}>
-                  <div style={{ width: 48, height: 48, background: 'rgba(239,68,68,0.2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                    <p.icon aria-hidden="true" style={{ width: 24, height: 24, color: '#EF4444' }} />
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: 24,
+              }}
+            >
+              {[
+                {
+                  title: 'リサーチに時間がかかる',
+                  desc: '1商品の価格差調査に平均2時間。本業の合間に続けられない。',
+                  color: '#EF4444',
+                },
+                {
+                  title: '何が売れるか分からない',
+                  desc: '仕入れリスクで踏み出せない。失敗したら損失になる不安。',
+                  color: '#EF4444',
+                },
+                {
+                  title: 'eBay出品のノウハウがない',
+                  desc: '英語タイトル・価格設定・送料計算が複雑で手が出せない。',
+                  color: '#EF4444',
+                },
+              ].map((p, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: 'rgba(15,23,42,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(245,158,11,0.2)',
+                    borderRadius: 16,
+                    padding: 24,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      background: 'rgba(239,68,68,0.15)',
+                      borderRadius: 12,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: 16,
+                    }}
+                    aria-hidden="true"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={p.color}
+                      strokeWidth="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
                   </div>
-                  <h3 style={{ color: 'white', fontSize: 17, fontWeight: 600, marginBottom: 8 }}>{p.title}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.6 }}>{p.description}</p>
+                  <h3 style={{ color: 'white', fontSize: 17, fontWeight: 600, marginBottom: 8 }}>
+                    {p.title}
+                  </h3>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.6 }}>
+                    {p.desc}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* 解決策セクション（フロー図） */}
-        <section aria-label="MerFreeeの仕組み" style={{ padding: '80px 16px' }}>
+        {/* 解決策セクション */}
+        <section aria-label="越境アービトラージの仕組み" style={{ padding: '80px 16px' }}>
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
-                MerFreeeで全部解決
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
+                越境アービトラージで全部解決
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>
-                3ステップで自動化完了。あとはダッシュボードを確認するだけ。
-              </p>
             </div>
-
-            {/* フロー図 */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 16,
+                flexWrap: 'wrap',
+              }}
+            >
               {[
-                { label: 'メルカリShops', sub: '売上データ', color: '#E85D04' },
-                { label: 'MerFreee', sub: '自動変換・同期', color: '#00B4D8', isCenter: true },
-                { label: '弥生 / freee', sub: '仕訳・取引登録完了', color: '#0A6EBD' },
+                { label: 'AIが価格差分析', sub: 'eBay公開API×Claude AI', color: '#F59E0B' },
+                { label: '毎朝お宝リスト配信', sub: '朝7時に届く・毎日更新', color: '#F59E0B', isCenter: true },
+                { label: 'あなたが仕入れて出品', sub: '利益獲得', color: '#10B981' },
               ].map((step, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                  <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: '20px 24px', textAlign: 'center', minWidth: 140, transform: step.isCenter ? 'scale(1.05)' : undefined, border: step.isCenter ? `2px solid ${step.color}` : undefined }}>
-                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: step.color, margin: '0 auto 8px', boxShadow: `0 0 12px ${step.color}` }} />
-                    <p style={{ color: 'white', fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{step.label}</p>
+                  <div
+                    style={{
+                      background: 'rgba(15,23,42,0.85)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      border: `${step.isCenter ? '2px' : '1px'} solid ${step.isCenter ? step.color : 'rgba(245,158,11,0.2)'}`,
+                      borderRadius: 16,
+                      padding: '20px 24px',
+                      textAlign: 'center',
+                      minWidth: 140,
+                    }}
+                  >
+                    <p style={{ color: 'white', fontWeight: 700, fontSize: 15, marginBottom: 4 }}>
+                      {step.label}
+                    </p>
                     <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>{step.sub}</p>
                   </div>
                   {i < 2 && (
-                    <div aria-hidden="true" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                      <div style={{ width: 40, height: 2, background: 'linear-gradient(to right, #E85D04, #00B4D8)', borderRadius: 1 }} />
-                      <div style={{ width: 0, height: 0, borderTop: '5px solid transparent', borderBottom: '5px solid transparent', borderLeft: '8px solid #00B4D8', marginLeft: 8 }} />
+                    <div aria-hidden="true">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
                     </div>
                   )}
                 </div>
@@ -240,22 +424,227 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 機能セクション */}
-        <section id="features" aria-label="主要機能" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}>
+        {/* お宝プレビューセクション */}
+        <section
+          aria-label="今日のお宝リストプレビュー"
+          style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}
+        >
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
-                主要機能
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
+                今日のお宝リスト（サンプル）
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>
+                毎日このようなリストが朝7時に届きます
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, position: 'relative' }}>
+              {MOCK_PREVIEW_ITEMS.map((item, i) => (
+                <article
+                  key={i}
+                  aria-label={`お宝商品: ${item.item_name}`}
+                  style={{
+                    background: 'rgba(15,23,42,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(245,158,11,0.2)',
+                    borderRadius: 16,
+                    padding: 24,
+                    position: 'relative',
+                    filter: i >= 2 ? 'blur(4px)' : undefined,
+                    pointerEvents: i >= 2 ? 'none' : undefined,
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
+                    <div>
+                      <span
+                        style={{
+                          background: '#F59E0B',
+                          color: 'white',
+                          fontSize: 12,
+                          fontWeight: 700,
+                          padding: '3px 10px',
+                          borderRadius: 20,
+                          display: 'inline-block',
+                          marginBottom: 8,
+                        }}
+                      >
+                        {item.category}
+                      </span>
+                      <h3 style={{ color: 'white', fontSize: 17, fontWeight: 700, marginBottom: 8 }}>
+                        {item.item_name}
+                      </h3>
+                    </div>
+                    <div
+                      style={{
+                        background: 'rgba(16,185,129,0.15)',
+                        border: '1px solid #10B981',
+                        borderRadius: 8,
+                        padding: '6px 14px',
+                        textAlign: 'center',
+                      }}
+                      aria-label={`ROI ${item.roi_pct}%`}
+                    >
+                      <div style={{ color: '#10B981', fontSize: 22, fontWeight: 800 }}>
+                        ROI {item.roi_pct}%
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 12 }}
+                    aria-label="価格差情報"
+                  >
+                    <span style={{ color: 'rgba(248,250,252,0.6)', fontSize: 14 }}>
+                      国内 ¥{item.domestic_low.toLocaleString()}〜¥{item.domestic_high.toLocaleString()}
+                    </span>
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                    <span style={{ color: 'white', fontSize: 14, fontWeight: 600 }}>
+                      海外 ¥{item.overseas_low.toLocaleString()}〜¥{item.overseas_high.toLocaleString()}
+                    </span>
+                    <span
+                      style={{
+                        background: '#10B981',
+                        color: 'white',
+                        fontSize: 20,
+                        fontWeight: 800,
+                        padding: '2px 12px',
+                        borderRadius: 8,
+                      }}
+                    >
+                      +{item.price_diff_pct}%
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <span
+                      style={{
+                        color: RISK_COLORS[item.risk_level],
+                        fontSize: 12,
+                        fontWeight: 600,
+                        border: `1px solid ${RISK_COLORS[item.risk_level]}`,
+                        borderRadius: 12,
+                        padding: '2px 8px',
+                      }}
+                    >
+                      {item.risk_label}
+                    </span>
+                    <span
+                      style={{
+                        background: 'rgba(245,158,11,0.15)',
+                        color: '#F59E0B',
+                        fontSize: 12,
+                        fontWeight: 600,
+                        borderRadius: 12,
+                        padding: '2px 8px',
+                      }}
+                    >
+                      {item.platform}
+                    </span>
+                  </div>
+                </article>
+              ))}
+
+              {/* ぼかしオーバーレイ */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 180,
+                  background: 'linear-gradient(to bottom, transparent, rgba(15,23,42,0.98))',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  paddingBottom: 24,
+                }}
+                aria-hidden="true"
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 24,
+                  left: 0,
+                  right: 0,
+                  textAlign: 'center',
+                }}
+              >
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, marginBottom: 12 }}>
+                  残り17件はStandardプランで全件表示
+                </p>
+                <Link
+                  href="/login"
+                  aria-label="Standardプランで全件表示する"
+                  style={{
+                    background: '#F59E0B',
+                    color: 'white',
+                    textDecoration: 'none',
+                    fontSize: 15,
+                    fontWeight: 700,
+                    minHeight: 48,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '0 24px',
+                    borderRadius: 10,
+                  }}
+                >
+                  Standardプランで全件表示
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* カテゴリ一覧セクション */}
+        <section aria-label="対応カテゴリ一覧" style={{ padding: '80px 16px' }}>
+          <div className="max-w-5xl mx-auto">
+            <div style={{ textAlign: 'center', marginBottom: 48 }}>
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
+                8カテゴリの高ROI商品を毎日発掘
               </h2>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
-              {features.map((f, i) => (
-                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }}>
-                  <div style={{ width: 48, height: 48, background: 'rgba(0,180,216,0.2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                    <f.icon aria-hidden="true" style={{ width: 24, height: 24, color: '#00B4D8' }} />
-                  </div>
-                  <h3 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{f.title}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.6 }}>{f.description}</p>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: 16,
+              }}
+            >
+              {CATEGORIES.map((cat) => (
+                <div
+                  key={cat.id}
+                  style={{
+                    background: 'rgba(15,23,42,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(245,158,11,0.2)',
+                    borderRadius: 12,
+                    padding: '16px 20px',
+                  }}
+                  aria-label={`カテゴリ: ${cat.name} ROI ${cat.roi}`}
+                >
+                  <p style={{ color: 'white', fontSize: 15, fontWeight: 600, marginBottom: 4 }}>
+                    {cat.name}
+                  </p>
+                  <p style={{ color: '#10B981', fontSize: 13, fontWeight: 700 }}>ROI {cat.roi}</p>
                 </div>
               ))}
             </div>
@@ -263,90 +652,237 @@ export default function LandingPage() {
         </section>
 
         {/* 料金プランセクション */}
-        <section id="pricing" aria-label="料金プラン" style={{ padding: '80px 16px', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }} className="backdrop-blur-sm">
+        <section
+          id="pricing"
+          aria-label="料金プラン"
+          style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}
+        >
           <div className="max-w-5xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
                 料金プラン
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>14日間無料トライアル後、プランをお選びください</p>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>
+                7日間無料トライアル後、プランをお選びください
+              </p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24 }}>
-              {/* Starterプラン */}
-              <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 28 }}>
-                <h3 style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Starter</h3>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                gap: 24,
+              }}
+            >
+              {/* Freeプラン */}
+              <div
+                style={{
+                  background: 'rgba(15,23,42,0.85)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(245,158,11,0.2)',
+                  borderRadius: 16,
+                  padding: 28,
+                }}
+                aria-label="Freeプラン"
+              >
+                <h3 style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
+                  Free
+                </h3>
                 <div style={{ marginBottom: 16 }}>
-                  <span style={{ color: 'white', fontSize: 36, fontWeight: 800 }}>980</span>
-                  <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>円/月</span>
+                  <span style={{ color: 'white', fontSize: 36, fontWeight: 800 }}>無料</span>
                 </div>
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px' }}>
-                  {['メルカリShops連携', '月50件まで同期', '弥生 または freee 連携', 'メール通知'].map((f) => (
-                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>
-                      <CheckIcon aria-hidden="true" style={{ width: 16, height: 16, color: '#10B981', flexShrink: 0 }} />
+                  {['お宝リスト3件/日', 'カテゴリ1つのみ', 'AI分析なし'].map((f) => (
+                    <li
+                      key={f}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        marginBottom: 8,
+                        color: 'rgba(255,255,255,0.7)',
+                        fontSize: 14,
+                      }}
+                    >
+                      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
                   href="/login"
-                  aria-label="Starterプランで14日間無料トライアルを開始する"
-                  className="btn-secondary"
-                  style={{ width: '100%', textAlign: 'center' }}
+                  aria-label="Freeプランで始める"
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    color: 'rgba(255,255,255,0.8)',
+                    textDecoration: 'none',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    minHeight: 44,
+                    lineHeight: '44px',
+                    borderRadius: 8,
+                    background: 'rgba(255,255,255,0.05)',
+                  }}
                 >
-                  無料で試す
+                  無料で始める
                 </Link>
               </div>
 
-              {/* Standardプラン（おすすめ） */}
-              <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 28, border: '2px solid #00B4D8', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: '#00B4D8', color: 'white', fontSize: 12, fontWeight: 700, padding: '3px 12px', borderRadius: 12 }}>
+              {/* Standardプラン */}
+              <div
+                style={{
+                  background: 'rgba(15,23,42,0.85)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '2px solid #F59E0B',
+                  borderRadius: 16,
+                  padding: 28,
+                  position: 'relative',
+                }}
+                aria-label="Standardプラン（おすすめ）"
+              >
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: -12,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: '#F59E0B',
+                    color: 'white',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    padding: '3px 12px',
+                    borderRadius: 12,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   最もご利用多数
                 </div>
-                <h3 style={{ color: '#00B4D8', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Standard</h3>
+                <h3 style={{ color: '#F59E0B', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
+                  Standard
+                </h3>
                 <div style={{ marginBottom: 16 }}>
                   <span style={{ color: 'white', fontSize: 36, fontWeight: 800 }}>1,980</span>
                   <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>円/月</span>
                 </div>
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px' }}>
-                  {['メルカリShops連携', '月500件まで同期', '弥生 + freee 両対応', '適格請求書PDF自動生成', '月次レポートメール'].map((f) => (
-                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>
-                      <CheckIcon aria-hidden="true" style={{ width: 16, height: 16, color: '#00B4D8', flexShrink: 0 }} />
+                  {[
+                    'お宝リスト20件/日',
+                    '全カテゴリ対応',
+                    'AI分析コメント付き',
+                    '朝7時メール配信',
+                  ].map((f) => (
+                    <li
+                      key={f}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        marginBottom: 8,
+                        color: 'rgba(255,255,255,0.7)',
+                        fontSize: 14,
+                      }}
+                    >
+                      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
                   href="/login"
-                  aria-label="Standardプランで14日間無料トライアルを開始する"
-                  className="btn-primary"
-                  style={{ width: '100%', textAlign: 'center' }}
+                  aria-label="Standardプランで7日間無料トライアルを開始する"
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    background: '#F59E0B',
+                    color: 'white',
+                    textDecoration: 'none',
+                    fontSize: 14,
+                    fontWeight: 700,
+                    minHeight: 44,
+                    lineHeight: '44px',
+                    borderRadius: 8,
+                  }}
                 >
-                  無料で試す
+                  7日間無料で試す
                 </Link>
               </div>
 
               {/* Proプラン */}
-              <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 28 }}>
-                <h3 style={{ color: '#E85D04', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Pro</h3>
+              <div
+                style={{
+                  background: 'rgba(15,23,42,0.85)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(245,158,11,0.2)',
+                  borderRadius: 16,
+                  padding: 28,
+                }}
+                aria-label="Proプラン"
+              >
+                <h3 style={{ color: '#10B981', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Pro</h3>
                 <div style={{ marginBottom: 16 }}>
                   <span style={{ color: 'white', fontSize: 36, fontWeight: 800 }}>4,980</span>
                   <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>円/月</span>
                 </div>
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px' }}>
-                  {['メルカリShops連携', '無制限同期', '弥生 + freee 両対応', '適格請求書PDF自動生成', '月次レポートメール', '優先サポート', 'APIアクセス'].map((f) => (
-                    <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>
-                      <CheckIcon aria-hidden="true" style={{ width: 16, height: 16, color: '#E85D04', flexShrink: 0 }} />
+                  {[
+                    'お宝リスト無制限',
+                    '全カテゴリ対応',
+                    'AI分析コメント付き',
+                    'カスタムカテゴリ追加',
+                    'Slack通知',
+                    '優先サポート',
+                  ].map((f) => (
+                    <li
+                      key={f}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        marginBottom: 8,
+                        color: 'rgba(255,255,255,0.7)',
+                        fontSize: 14,
+                      }}
+                    >
+                      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
                   href="/login"
-                  aria-label="Proプランで14日間無料トライアルを開始する"
-                  className="btn-secondary"
-                  style={{ width: '100%', textAlign: 'center' }}
+                  aria-label="Proプランで7日間無料トライアルを開始する"
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    color: 'rgba(255,255,255,0.8)',
+                    textDecoration: 'none',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    minHeight: 44,
+                    lineHeight: '44px',
+                    borderRadius: 8,
+                    background: 'rgba(255,255,255,0.05)',
+                  }}
                 >
-                  無料で試す
+                  7日間無料で試す
                 </Link>
               </div>
             </div>
@@ -354,18 +890,41 @@ export default function LandingPage() {
         </section>
 
         {/* FAQセクション */}
-        <section id="faq" aria-label="よくある質問" style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.2)' }}>
+        <section id="faq" aria-label="よくある質問" style={{ padding: '80px 16px' }}>
           <div className="max-w-3xl mx-auto">
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 12 }}>
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
                 よくある質問
               </h2>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {faqItems.map((item, i) => (
-                <div key={i} className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 24 }} role="article" aria-label={item.question}>
-                  <h3 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>{item.question}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, lineHeight: 1.7, margin: 0 }}>{item.answer}</p>
+                <div
+                  key={i}
+                  role="article"
+                  aria-label={item.question}
+                  style={{
+                    background: 'rgba(15,23,42,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(245,158,11,0.2)',
+                    borderRadius: 16,
+                    padding: 24,
+                  }}
+                >
+                  <h3 style={{ color: 'white', fontSize: 16, fontWeight: 600, marginBottom: 8 }}>
+                    {item.question}
+                  </h3>
+                  <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, lineHeight: 1.7, margin: 0 }}>
+                    {item.answer}
+                  </p>
                 </div>
               ))}
             </div>
@@ -373,42 +932,94 @@ export default function LandingPage() {
         </section>
 
         {/* CTAセクション */}
-        <section aria-label="無料トライアル登録" style={{ padding: '80px 16px', textAlign: 'center' }} className="hero-gradient">
+        <section
+          aria-label="無料トライアル登録"
+          style={{
+            padding: '80px 16px',
+            textAlign: 'center',
+            background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)',
+          }}
+        >
           <div className="max-w-2xl mx-auto">
-            <h2 style={{ color: 'white', fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 700, marginBottom: 16 }}>
-              今すぐ記帳を自動化しませんか？
+            <h2
+              style={{
+                color: 'white',
+                fontSize: 'clamp(22px, 4vw, 36px)',
+                fontWeight: 700,
+                marginBottom: 16,
+              }}
+            >
+              今日から越境アービトラージを始めませんか？
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 16, marginBottom: 32 }}>
-              14日間完全無料。クレジットカード不要。いつでも解約できます。
+              7日間完全無料。クレジットカード登録不要。いつでも解約できます。
             </p>
             <Link
               href="/login"
-              aria-label="14日間無料トライアルを開始する"
-              className="btn-primary"
-              style={{ fontSize: 18, padding: '16px 36px', borderRadius: 12 }}
+              aria-label="7日間無料トライアルを開始する"
+              style={{
+                background: '#F59E0B',
+                color: 'white',
+                textDecoration: 'none',
+                fontSize: 18,
+                fontWeight: 700,
+                minHeight: 56,
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '0 36px',
+                borderRadius: 12,
+              }}
             >
-              14日間無料で試す
+              7日間無料でお宝リストを見る
             </Link>
           </div>
         </section>
       </main>
 
       {/* フッター */}
-      <footer style={{ background: 'rgba(0,0,0,0.4)', borderTop: '1px solid rgba(255,255,255,0.1)', padding: '32px 16px' }}>
+      <footer
+        style={{
+          background: 'rgba(0,0,0,0.4)',
+          borderTop: '1px solid rgba(245,158,11,0.1)',
+          padding: '32px 16px',
+        }}
+      >
         <div className="max-w-5xl mx-auto">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 16,
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{ width: 24, height: 24, background: '#E85D04', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ color: 'white', fontWeight: 900, fontSize: 13 }}>M</span>
+              <div
+                style={{
+                  width: 24,
+                  height: 24,
+                  background: '#F59E0B',
+                  borderRadius: 6,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                aria-hidden="true"
+              >
+                <span style={{ color: 'white', fontWeight: 900, fontSize: 13 }}>A</span>
               </div>
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, fontWeight: 600 }}>MerFreee</span>
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, fontWeight: 600 }}>
+                越境アービトラージ
+              </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              {/* Xシェアボタン */}
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("メルカリShopsの記帳が全自動に！インボイス対応・弥生・freee両対応のMerFreeeを試してみた #MerFreee #メルカリShops https://merfreee.vercel.app")}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('AIが毎日発掘する越境ECお宝リスト！eBay×メルカリの価格差で副業収入を最大化 #越境アービトラージ #副業 #eBay https://ecross-arbitrage.vercel.app')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="MerFreeeをXでシェアする"
+                aria-label="越境アービトラージをXでシェアする"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -425,11 +1036,18 @@ export default function LandingPage() {
                   minHeight: 44,
                 }}
               >
-                <svg aria-hidden="true" viewBox="0 0 24 24" width={13} height={13} fill="rgba(255,255,255,0.7)">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  width={13}
+                  height={13}
+                  fill="rgba(255,255,255,0.7)"
+                >
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
                 </svg>
                 Xでシェア
               </a>
+
               <nav aria-label="フッターナビゲーション" style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                 {[
                   { href: '/legal/privacy', label: 'プライバシーポリシー' },
@@ -449,7 +1067,7 @@ export default function LandingPage() {
             </div>
           </div>
           <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 20, textAlign: 'center' }}>
-            (c) 2026 MerFreee. All rights reserved.
+            (c) 2026 越境アービトラージ. All rights reserved.
           </p>
         </div>
       </footer>

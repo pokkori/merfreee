@@ -1,67 +1,50 @@
-import { MOCK_ORDERS, fetchMercariOrdersMock } from '../lib/mercari/mock';
+// 越境アービトラージ: eBay APIユーティリティテスト
+import { usdToJpy } from '../lib/ebay/search';
+import { CATEGORY_EBAY_KEYWORDS, DOMESTIC_PRICE_MOCK } from '../lib/ebay/categories';
 
-describe('メルカリShopsモックデータ', () => {
-  test('モックデータが20件存在する', () => {
-    expect(MOCK_ORDERS).toHaveLength(20);
+describe('eBay カテゴリデータ', () => {
+  test('8カテゴリのキーワードが定義されている', () => {
+    expect(Object.keys(CATEGORY_EBAY_KEYWORDS)).toHaveLength(8);
   });
 
-  test('全モックデータにorder_idが存在する', () => {
-    MOCK_ORDERS.forEach((order) => {
-      expect(order.order_id).toBeTruthy();
-      expect(order.order_id).toMatch(/^mock-\d+$/);
+  test('全カテゴリに1件以上のキーワードが存在する', () => {
+    Object.entries(CATEGORY_EBAY_KEYWORDS).forEach(([category, keywords]) => {
+      expect(keywords.length).toBeGreaterThan(0);
+      expect(typeof keywords[0]).toBe('string');
+      expect(keywords[0].length).toBeGreaterThan(0);
+      void category;
     });
   });
 
-  test('全モックデータにitem_nameが存在する', () => {
-    MOCK_ORDERS.forEach((order) => {
-      expect(order.item_name).toBeTruthy();
-      expect(order.item_name.length).toBeGreaterThan(0);
-    });
+  test('国内価格モックデータが8カテゴリ分存在する', () => {
+    expect(Object.keys(DOMESTIC_PRICE_MOCK)).toHaveLength(8);
   });
 
-  test('全モックデータのamountが正の整数', () => {
-    MOCK_ORDERS.forEach((order) => {
-      expect(order.amount).toBeGreaterThan(0);
-      expect(Number.isInteger(order.amount)).toBe(true);
+  test('全カテゴリのモック価格がlow < highの関係になっている', () => {
+    Object.entries(DOMESTIC_PRICE_MOCK).forEach(([category, mock]) => {
+      expect(mock.low).toBeLessThan(mock.high);
+      expect(mock.low).toBeGreaterThan(0);
+      void category;
     });
   });
+});
 
-  test('全モックデータでnet_amount = amount - feeが成立する', () => {
-    MOCK_ORDERS.forEach((order) => {
-      expect(order.net_amount).toBe(order.amount - order.fee);
-    });
+describe('usdToJpy 換算', () => {
+  beforeEach(() => {
+    process.env.EXCHANGE_RATE_USD_JPY = '150';
   });
 
-  test('全モックデータのtax_rateが0.10', () => {
-    MOCK_ORDERS.forEach((order) => {
-      expect(order.tax_rate).toBe(0.10);
-    });
+  test('$100 → ¥15,000', () => {
+    expect(usdToJpy(100)).toBe(15000);
   });
 
-  test('fetchMercariOrdersMockが日付範囲でフィルタリングする', async () => {
-    const from = new Date('2026-03-01T00:00:00Z');
-    const to = new Date('2026-03-10T23:59:59Z');
-    const filtered = await fetchMercariOrdersMock(from, to);
-    expect(filtered.length).toBeGreaterThan(0);
-    filtered.forEach((order) => {
-      const soldAt = new Date(order.sold_at);
-      expect(soldAt >= from).toBe(true);
-      expect(soldAt <= to).toBe(true);
-    });
+  test('$0 → ¥0', () => {
+    expect(usdToJpy(0)).toBe(0);
   });
 
-  test('fetchMercariOrdersMockが範囲外データを除外する', async () => {
-    const from = new Date('2025-01-01T00:00:00Z');
-    const to = new Date('2025-01-31T23:59:59Z');
-    const filtered = await fetchMercariOrdersMock(from, to);
-    expect(filtered).toHaveLength(0);
-  });
-
-  test('buyer_invoice_numberがT-で始まるか null', () => {
-    MOCK_ORDERS.forEach((order) => {
-      if (order.buyer_invoice_number !== null) {
-        expect(order.buyer_invoice_number).toMatch(/^T-\d+$/);
-      }
-    });
+  test('小数点以下は四捨五入される', () => {
+    process.env.EXCHANGE_RATE_USD_JPY = '149';
+    // 1.5 * 149 = 223.5 → 224
+    expect(usdToJpy(1.5)).toBe(224);
   });
 });
