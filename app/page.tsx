@@ -269,7 +269,18 @@ export default function LandingPage() {
                 { value: '平均ROI 180%', label: '実績データ' },
                 { value: '毎日20件', label: '新着リスト' },
               ].map((stat) => (
-                <div key={stat.label} style={{ textAlign: 'center' }}>
+                <div
+                  key={stat.label}
+                  style={{
+                    textAlign: 'center',
+                    background: 'rgba(255,255,255,0.08)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    borderRadius: '16px',
+                    padding: '16px 24px',
+                  }}
+                >
                   <p style={{ color: '#F59E0B', fontSize: 24, fontWeight: 800, marginBottom: 4 }}>
                     {stat.value}
                   </p>
@@ -901,7 +912,18 @@ export default function LandingPage() {
 
             {/* 年間プランセクション */}
             <div style={{ marginTop: 32 }}>
-              <div style={{ textAlign: 'center', marginBottom: 20 }}>
+              <div
+                style={{
+                  textAlign: 'center',
+                  marginBottom: 20,
+                  background: 'rgba(255,255,255,0.08)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  borderRadius: '16px',
+                  padding: '20px 24px',
+                }}
+              >
                 <h3 style={{ color: 'rgba(255,255,255,0.8)', fontSize: 18, fontWeight: 700, marginBottom: 4 }}>
                   年間プランでさらにお得
                 </h3>
@@ -1088,7 +1110,18 @@ export default function LandingPage() {
                 仕入れ価格・販売価格・手数料率を入力するだけで予想利益がリアルタイムで表示されます
               </p>
             </div>
-            <ProfitSimulator />
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: '16px',
+                padding: '8px',
+              }}
+            >
+              <ProfitSimulator />
+            </div>
           </div>
         </section>
 
@@ -1102,29 +1135,40 @@ export default function LandingPage() {
           }}
         >
           <div className="max-w-2xl mx-auto">
-            <h2
+            <div
               style={{
-                color: 'white',
-                fontSize: 'clamp(22px, 4vw, 36px)',
-                fontWeight: 700,
-                marginBottom: 16,
+                background: 'rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: '16px',
+                padding: '48px 40px',
               }}
             >
-              今日から越境アービトラージを始めませんか？
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 16, marginBottom: 32 }}>
-              7日間完全無料。クレジットカード登録不要。いつでも解約できます。
-            </p>
-            <CtaButton
-              href="/login"
-              label="7日間無料トライアルを開始する"
-              fontSize={18}
-              minHeight={56}
-              paddingX={36}
-              borderRadius={12}
-            >
-              7日間無料でお宝リストを見る
-            </CtaButton>
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 16,
+                }}
+              >
+                今日から越境アービトラージを始めませんか？
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 16, marginBottom: 32 }}>
+                7日間完全無料。クレジットカード登録不要。いつでも解約できます。
+              </p>
+              <CtaButton
+                href="/login"
+                label="7日間無料トライアルを開始する"
+                fontSize={18}
+                minHeight={56}
+                paddingX={36}
+                borderRadius={12}
+              >
+                7日間無料でお宝リストを見る
+              </CtaButton>
+            </div>
           </div>
         </section>
       </main>
@@ -1169,7 +1213,7 @@ export default function LandingPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
               {/* Xシェアボタン */}
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('AIが毎日発掘する越境ECお宝リスト！eBay×メルカリの価格差で副業収入を最大化 #越境アービトラージ #副業 #eBay https://ecross-arbitrage.vercel.app')}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('AIが毎日発掘する越境ECお宝リスト！eBay×メルカリの価格差で副業収入を最大化 #越境アービトラージ #副業 #eBay https://merfreee.vercel.app')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="越境アービトラージをXでシェアする"
