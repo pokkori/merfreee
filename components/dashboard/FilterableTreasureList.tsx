@@ -20,13 +20,37 @@ const CATEGORY_TABS = [
   { id: 'manga_books', label: '絶版マンガ' },
 ];
 
+type SortKey = 'roi_desc' | 'profit_desc' | 'pricediff_desc';
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: 'roi_desc', label: 'ROI高い順' },
+  { value: 'profit_desc', label: '利益高い順' },
+  { value: 'pricediff_desc', label: '価格差大きい順' },
+];
+
+function useSortedItems(items: TreasureItem[], sortKey: SortKey): TreasureItem[] {
+  return [...items].sort((a, b) => {
+    if (sortKey === 'roi_desc') return b.roi_pct - a.roi_pct;
+    if (sortKey === 'profit_desc') {
+      const profitA = a.overseas_price_low - a.domestic_price_high;
+      const profitB = b.overseas_price_low - b.domestic_price_high;
+      return profitB - profitA;
+    }
+    if (sortKey === 'pricediff_desc') return b.price_diff_pct - a.price_diff_pct;
+    return 0;
+  });
+}
+
 export function FilterableTreasureList({ items }: FilterableTreasureListProps) {
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [sortKey, setSortKey] = useState<SortKey>('roi_desc');
 
   const filteredItems =
     activeCategory === 'all'
       ? items
       : items.filter((item) => item.category === activeCategory);
+
+  const sortedItems = useSortedItems(filteredItems, sortKey);
 
   const handleSave = (itemId: string) => {
     if (typeof window === 'undefined') return;
@@ -52,11 +76,22 @@ export function FilterableTreasureList({ items }: FilterableTreasureListProps) {
 
   return (
     <div>
-      {/* Category filter tabs */}
-      <nav
-        aria-label="カテゴリフィルタ"
-        style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}
+      {/* フィルタ + ソート行 */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          gap: 12,
+          marginBottom: 16,
+          flexWrap: 'wrap',
+        }}
       >
+        {/* Category filter tabs */}
+        <nav
+          aria-label="カテゴリフィルタ"
+          style={{ display: 'flex', gap: 8, flexWrap: 'wrap', flex: 1 }}
+        >
         {visibleTabs.map((tab) => {
           const isActive = activeCategory === tab.id;
           return (
@@ -84,7 +119,50 @@ export function FilterableTreasureList({ items }: FilterableTreasureListProps) {
             </button>
           );
         })}
-      </nav>
+        </nav>
+
+        {/* ソートドロップダウン */}
+        <div style={{ flexShrink: 0 }}>
+          <label
+            htmlFor="sort-select"
+            style={{
+              display: 'block',
+              color: 'rgba(255,255,255,0.4)',
+              fontSize: 11,
+              fontWeight: 600,
+              marginBottom: 4,
+            }}
+          >
+            並び替え
+          </label>
+          <select
+            id="sort-select"
+            value={sortKey}
+            onChange={(e) => setSortKey(e.target.value as SortKey)}
+            aria-label="お宝リストの並び替えを選択"
+            style={{
+              background: 'rgba(15,23,42,0.85)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(245,158,11,0.3)',
+              borderRadius: 8,
+              color: 'white',
+              fontSize: 14,
+              fontWeight: 600,
+              padding: '8px 12px',
+              minHeight: 44,
+              cursor: 'pointer',
+              outline: 'none',
+            }}
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value} style={{ background: '#0F172A' }}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* Treasure cards grid */}
       <div
@@ -96,7 +174,7 @@ export function FilterableTreasureList({ items }: FilterableTreasureListProps) {
         role="list"
         aria-label="今日のお宝リスト"
       >
-        {filteredItems.map((item, index) => (
+        {sortedItems.map((item, index) => (
           <div key={item.id} role="listitem" style={{ position: 'relative' }}>
             {/* Free plan: 4件目以降はぼかしオーバーレイ */}
             {index >= 3 && (
@@ -164,7 +242,7 @@ export function FilterableTreasureList({ items }: FilterableTreasureListProps) {
         ))}
       </div>
 
-      {filteredItems.length === 0 && (
+      {sortedItems.length === 0 && (
         <p
           style={{
             color: 'rgba(255,255,255,0.5)',

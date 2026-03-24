@@ -879,18 +879,19 @@ export default function LandingPage() {
                 <Link
                   href="/login"
                   aria-label="Proプランで7日間無料トライアルを開始する"
+                  className="pro-cta-btn"
                   style={{
                     display: 'block',
                     textAlign: 'center',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    color: 'rgba(255,255,255,0.8)',
+                    border: 'none',
+                    color: 'white',
                     textDecoration: 'none',
                     fontSize: 14,
-                    fontWeight: 600,
+                    fontWeight: 700,
                     minHeight: 44,
                     lineHeight: '44px',
                     borderRadius: 8,
-                    background: 'rgba(255,255,255,0.05)',
+                    background: '#10B981',
                   }}
                 >
                   7日間無料で試す

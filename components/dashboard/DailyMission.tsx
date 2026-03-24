@@ -1,10 +1,50 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
+interface Mission {
+  title: string;
+  description: string;
+  actionLabel: string;
+  href?: string;
+}
+
+const MISSIONS: Mission[] = [
+  {
+    title: '今日のミッション',
+    description: 'お宝商品を3件チェックしよう (+10pt)',
+    actionLabel: '完了',
+  },
+  {
+    title: '今日のミッション',
+    description: '利益シミュレーターで商品1件計算する (+10pt)',
+    actionLabel: 'シミュレーターへ',
+    href: '/dashboard',
+  },
+  {
+    title: '今日のミッション',
+    description: 'アラート設定を確認する (+10pt)',
+    actionLabel: 'アラート設定へ',
+    href: '/alerts',
+  },
+];
+
+function getDailyMissionIndex(): number {
+  const today = new Date().toISOString().slice(0, 10);
+  // 日付文字列をハッシュ化して3種ローテーション
+  let hash = 0;
+  for (let i = 0; i < today.length; i++) {
+    hash = (hash * 31 + today.charCodeAt(i)) & 0xffffffff;
+  }
+  return Math.abs(hash) % MISSIONS.length;
+}
 
 export function DailyMission() {
   const today = new Date().toISOString().slice(0, 10);
   const storageKey = `ecross_mission_${today}`;
+  const missionIndex = getDailyMissionIndex();
+  const mission = MISSIONS[missionIndex];
 
   const [completed, setCompleted] = useState(false);
   const [points, setPoints] = useState(0);
@@ -29,7 +69,6 @@ export function DailyMission() {
         storageKey,
         JSON.stringify({ completed: true, points: newPoints })
       );
-      // ストリークポイントにも加算
       const streakRaw = localStorage.getItem('ecross_streak');
       const streak = streakRaw
         ? (JSON.parse(streakRaw) as { count: number; lastDate: string; points: number })
@@ -99,34 +138,59 @@ export function DailyMission() {
               marginBottom: 2,
             }}
           >
-            {completed ? 'ミッション完了！' : '今日のミッション'}
+            {completed ? 'ミッション完了！' : mission.title}
           </p>
           <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13 }}>
             {completed
               ? `+10pt を獲得しました（合計 ${points}pt）`
-              : '新着商品を1件チェックしよう (+10pt)'}
+              : mission.description}
           </p>
         </div>
       </div>
       {!completed && (
-        <button
-          onClick={handleComplete}
-          aria-label="今日のミッションを完了する"
-          style={{
-            background: '#F59E0B',
-            color: 'white',
-            border: 'none',
-            borderRadius: 8,
-            padding: '8px 18px',
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: 'pointer',
-            minHeight: 44,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          完了
-        </button>
+        mission.href ? (
+          <Link
+            href={mission.href}
+            onClick={handleComplete}
+            aria-label={`今日のミッション: ${mission.actionLabel}`}
+            style={{
+              background: '#F59E0B',
+              color: 'white',
+              border: 'none',
+              borderRadius: 8,
+              padding: '8px 18px',
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: 'pointer',
+              minHeight: 44,
+              whiteSpace: 'nowrap',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+            }}
+          >
+            {mission.actionLabel}
+          </Link>
+        ) : (
+          <button
+            onClick={handleComplete}
+            aria-label="今日のミッションを完了する"
+            style={{
+              background: '#F59E0B',
+              color: 'white',
+              border: 'none',
+              borderRadius: 8,
+              padding: '8px 18px',
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: 'pointer',
+              minHeight: 44,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {mission.actionLabel}
+          </button>
+        )
       )}
     </div>
   );

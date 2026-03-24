@@ -182,7 +182,7 @@ export default function AlertsPage() {
               アラートメール送信先
             </label>
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginBottom: 8 }}>
-              設定した条件を満たす物件が見つかった際にメールでお知らせします
+              設定した条件を満たす商品が見つかった際にメールでお知らせします
             </p>
             <input
               id="alert-email"

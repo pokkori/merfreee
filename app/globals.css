@@ -131,6 +131,15 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Proプラン CTAボタン */
+.pro-cta-btn {
+  transition: background 0.2s, opacity 0.15s;
+}
+
+.pro-cta-btn:hover {
+  background: #34D399 !important;
+}
+
 /* グラデーション背景 */
 .hero-gradient {
   background: linear-gradient(135deg, #03045E 0%, #0A6EBD 50%, #00B4D8 100%);

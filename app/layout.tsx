@@ -19,68 +19,6 @@ const jsonLd = {
   author: { '@type': 'Organization', name: '越境アービトラージ' },
 };
 
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: '越境アービトラージとは？',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: '日本国内で安く買える商品と海外で高く売れる商品の価格差をAIが毎日発掘し、その情報リストを提供するサービスです。',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'メルカリの規約に違反しませんか？',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: '本サービスはメルカリAPIへの直接アクセスは行いません。eBay公開API・楽天API等の公開データのみを使用した価格差情報の提供です。',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: '無料トライアルはありますか？',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: '7日間の無料トライアルをご用意しています。クレジットカード不要で今すぐ開始できます。',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: '初心者でも稼げますか？',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'はい。各商品にはeBay出品用の推奨英語キーワード・推奨価格帯・注意点をAIが自動生成します。eBay出品経験がゼロでも、リストを見ながら始められる設計です。',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: '月額以外の料金はかかりますか？',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'サービス利用料は月額1,980円（Standard）または4,980円（Pro）のみです。仕入れ費用・eBay出品手数料はユーザー様の実費となります。',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: '年間プランはありますか？',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'はい。Standard年間プラン¥19,800/年（月払い比17%オフ）とPro年間プラン¥49,800/年をご用意しています。まとめて支払うことで毎月節約できます。',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'どのくらいの利益が期待できますか？',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: '掲載商品の平均ROIは180%です。仕入れ価格・送料・eBay手数料・PayPal手数料・為替マージンを考慮した利益シミュレーターで事前確認が可能です。',
-      },
-    },
-  ],
-};
 
 export const metadata: Metadata = {
   title: '越境アービトラージ | AIが毎日発掘する海外で売れるお宝リスト',
@@ -120,10 +58,6 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col">

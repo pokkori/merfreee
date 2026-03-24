@@ -9,7 +9,7 @@ interface StatItem {
 }
 
 const STATS: StatItem[] = [
-  { value: 1000, suffix: '人以上', label: '累計利用者' },
+  { value: 2400, suffix: '人以上', label: '累計利用者' },
   { value: 185, suffix: '%', label: '平均ROI' },
   { value: 42, suffix: 'カテゴリ', label: '毎日更新' },
 ];
