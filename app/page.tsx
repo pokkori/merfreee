@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import { StreakBadge } from '@/components/dashboard/StreakBadge';
+import { StatsCounter } from '@/components/shared/StatsCounter';
+import { CtaButton } from '@/components/shared/CtaButton';
 
 const faqItems = [
   {
@@ -205,12 +208,17 @@ export default function LandingPage() {
                 border: '1px solid rgba(245,158,11,0.4)',
                 borderRadius: 20,
                 padding: '4px 16px',
-                marginBottom: 24,
+                marginBottom: 16,
               }}
             >
               <span style={{ color: '#F59E0B', fontSize: 13, fontWeight: 600 }}>
                 AIが毎日更新するお宝リスト
               </span>
+            </div>
+
+            {/* ストリークバッジ */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
+              <StreakBadge streakCount={7} totalPoints={1250} />
             </div>
 
             <h1
@@ -231,24 +239,16 @@ export default function LandingPage() {
             </p>
 
             <div style={{ marginTop: 32, marginBottom: 40 }}>
-              <Link
+              <CtaButton
                 href="/login"
-                aria-label="7日間無料でお宝リストを見る"
-                style={{
-                  background: '#F59E0B',
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontSize: 16,
-                  fontWeight: 700,
-                  minHeight: 48,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  padding: '0 28px',
-                  borderRadius: 12,
-                }}
+                label="7日間無料でお宝リストを見る"
+                fontSize={16}
+                minHeight={48}
+                paddingX={28}
+                borderRadius={12}
               >
                 7日間無料でお宝リストを見る
-              </Link>
+              </CtaButton>
             </div>
 
             {/* ソーシャルプルーフ */}
@@ -889,6 +889,9 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* 実績カウンターセクション */}
+        <StatsCounter />
+
         {/* FAQセクション */}
         <section id="faq" aria-label="よくある質問" style={{ padding: '80px 16px' }}>
           <div className="max-w-3xl mx-auto">
@@ -954,24 +957,16 @@ export default function LandingPage() {
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 16, marginBottom: 32 }}>
               7日間完全無料。クレジットカード登録不要。いつでも解約できます。
             </p>
-            <Link
+            <CtaButton
               href="/login"
-              aria-label="7日間無料トライアルを開始する"
-              style={{
-                background: '#F59E0B',
-                color: 'white',
-                textDecoration: 'none',
-                fontSize: 18,
-                fontWeight: 700,
-                minHeight: 56,
-                display: 'inline-flex',
-                alignItems: 'center',
-                padding: '0 36px',
-                borderRadius: 12,
-              }}
+              label="7日間無料トライアルを開始する"
+              fontSize={18}
+              minHeight={56}
+              paddingX={36}
+              borderRadius={12}
             >
               7日間無料でお宝リストを見る
-            </Link>
+            </CtaButton>
           </div>
         </section>
       </main>

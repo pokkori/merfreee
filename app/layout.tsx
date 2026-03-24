@@ -19,6 +19,37 @@ const jsonLd = {
   author: { '@type': 'Organization', name: '越境アービトラージ' },
 };
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '越境アービトラージとは？',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '日本国内で安く買える商品と海外で高く売れる商品の価格差をAIが毎日発掘し、その情報リストを提供するサービスです。',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'メルカリの規約に違反しませんか？',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '本サービスはメルカリAPIへの直接アクセスは行いません。eBay公開API・楽天API等の公開データのみを使用した価格差情報の提供です。',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '無料トライアルはありますか？',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '7日間の無料トライアルをご用意しています。クレジットカード不要で今すぐ開始できます。',
+      },
+    },
+  ],
+};
+
 export const metadata: Metadata = {
   title: '越境アービトラージ | AIが毎日発掘する海外で売れるお宝リスト',
   description: 'メルカリ等で安く買ってeBayで高く売る。AIが毎日更新する価格差情報リストで副業収入を最大化。7日間無料トライアル。',
@@ -57,6 +88,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col">

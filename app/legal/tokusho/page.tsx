@@ -13,12 +13,13 @@ export default function TokushoPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }} role="table" aria-label="特定商取引法表記">
             <tbody>
               {[
-                { label: '販売業者', value: 'MerFreee運営者' },
+                { label: '販売業者', value: '越境アービトラージ運営者' },
                 { label: '所在地', value: '請求があった場合は遅滞なく開示します' },
                 { label: '電話番号', value: '請求があった場合は遅滞なく開示します' },
-                { label: 'メールアドレス', value: 'support@merfreee.jp' },
-                { label: '運営統括責任者', value: 'MerFreee運営責任者' },
-                { label: '販売価格', value: 'Starterプラン: 月額980円（税込）\nStandardプラン: 月額1,980円（税込）\nProプラン: 月額4,980円（税込）' },
+                { label: 'メールアドレス', value: 'support@ecross-arbitrage.vercel.app' },
+                { label: '運営統括責任者', value: '越境アービトラージ運営責任者' },
+                { label: '役務内容', value: 'メルカリ×eBay価格差情報サービス。AIが毎日発掘する越境EC価格差情報リストの提供、eBay出品推奨データの配信。' },
+                { label: '販売価格', value: 'Freeプラン: 無料\nStandardプラン: 月額1,980円（税込）\nProプラン: 月額4,980円（税込）' },
                 { label: '販売価格以外の費用', value: 'インターネット接続費用等はお客様負担となります' },
                 { label: '支払い方法', value: 'クレジットカード（VISA/MasterCard/JCB/AMEX）' },
                 { label: '支払い時期', value: '毎月自動引き落とし（初回は契約日）' },
