@@ -1,38 +1,138 @@
-import { KpiCard } from '@/components/dashboard/KpiCard';
-import { SyncStatusBadge } from '@/components/dashboard/SyncStatusBadge';
+import { TreasureCard } from '@/components/dashboard/TreasureCard';
 import { StreakBadge } from '@/components/dashboard/StreakBadge';
-// streak tracking: updateStreak/loadStreak はStreakBadgeコンポーネント内で管理
-import { KpiData } from '@/types';
+import { ShareProfitButton } from '@/components/dashboard/ShareProfitButton';
+import { TreasureItem, SavedItem } from '@/types';
 
-// ダッシュボードはモックデータで表示（Supabase未接続時でも動作）
-const mockKpiData: KpiData = {
-  totalSales: 238700,
-  totalTransactions: 20,
-  totalFee: 13124,
-  syncedToYayoi: 18,
-  syncedToFreee: 15,
-  savedMinutes: 100, // 20件 × 5分
-};
+// モックデータ（Supabase未接続時でも動作）
+const MOCK_TREASURE_ITEMS: TreasureItem[] = [
+  {
+    id: '1',
+    category: 'anime_figures',
+    item_name: 'ドラゴンボール フィギュア 初版 ベジータ',
+    domestic_price_low: 3000,
+    domestic_price_high: 8000,
+    overseas_price_low: 9000,
+    overseas_price_high: 35000,
+    price_diff_pct: 250,
+    roi_pct: 185,
+    recommended_platform: 'ebay',
+    search_keywords: 'フィギュア ドラゴンボール 初版 ベジータ',
+    ebay_keywords: 'dragon ball figure vegeta vintage japan',
+    ai_comment: 'eBayでのドラゴンボール初版フィギュアは海外コレクター需要が高く、状態が良ければ高値が期待できます。',
+    risk_level: 'medium',
+    plan_required: 'free',
+    valid_date: new Date().toISOString().slice(0, 10),
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    category: 'vintage_cameras',
+    item_name: 'ニコン FM2 フィルムカメラ',
+    domestic_price_low: 8000,
+    domestic_price_high: 25000,
+    overseas_price_low: 20000,
+    overseas_price_high: 65000,
+    price_diff_pct: 160,
+    roi_pct: 120,
+    recommended_platform: 'ebay',
+    search_keywords: 'ニコン フィルムカメラ FM2',
+    ebay_keywords: 'nikon fm2 film camera japan vintage',
+    ai_comment: '欧米のカメラ愛好家からの需要が安定しています。動作確認済みのものが特に高値。',
+    risk_level: 'low',
+    plan_required: 'standard',
+    valid_date: new Date().toISOString().slice(0, 10),
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    category: 'game_retro',
+    item_name: 'ファミコン ソフト 初期タイトルセット',
+    domestic_price_low: 2000,
+    domestic_price_high: 10000,
+    overseas_price_low: 8000,
+    overseas_price_high: 40000,
+    price_diff_pct: 300,
+    roi_pct: 210,
+    recommended_platform: 'ebay',
+    search_keywords: 'ファミコン ソフト レトロゲーム 初期',
+    ebay_keywords: 'famicom retro game japan vintage software',
+    ai_comment: 'レトロゲームは世界的に人気急上昇中。箱・説明書付きは価格が2〜3倍になることも。',
+    risk_level: 'low',
+    plan_required: 'free',
+    valid_date: new Date().toISOString().slice(0, 10),
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '4',
+    category: 'vinyl_records',
+    item_name: '山下達郎 レコード Ride On Time',
+    domestic_price_low: 2000,
+    domestic_price_high: 6000,
+    overseas_price_low: 8000,
+    overseas_price_high: 28000,
+    price_diff_pct: 280,
+    roi_pct: 195,
+    recommended_platform: 'ebay',
+    search_keywords: 'シティポップ レコード LP 山下達郎',
+    ebay_keywords: 'tatsuro yamashita ride on time vinyl city pop japan',
+    ai_comment: 'シティポップブームで海外での人気継続中。盤質が重要。',
+    risk_level: 'medium',
+    plan_required: 'standard',
+    valid_date: new Date().toISOString().slice(0, 10),
+    created_at: new Date().toISOString(),
+  },
+];
+
+const MOCK_SAVED_ITEMS: SavedItem[] = [];
 
 export default function DashboardPage() {
+  const streakCount = 3;
+  const totalPoints = 80;
+  const items = MOCK_TREASURE_ITEMS;
+
+  const CATEGORY_TABS = [
+    { id: 'all', label: 'すべて' },
+    { id: 'anime_figures', label: 'アニメフィギュア' },
+    { id: 'vintage_cameras', label: 'カメラ' },
+    { id: 'game_retro', label: 'レトロゲーム' },
+    { id: 'vinyl_records', label: 'レコード' },
+  ];
+
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+      {/* Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 24,
+          flexWrap: 'wrap',
+          gap: 12,
+        }}
+      >
         <div>
-          <h1 style={{ color: 'white', fontSize: 24, fontWeight: 700, marginBottom: 4 }}>ダッシュボード</h1>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>2026年3月の売上サマリー</p>
+          <h1 style={{ color: 'white', fontSize: 24, fontWeight: 700, marginBottom: 4 }}>
+            今日のお宝: {items.length}件
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>
+            毎日朝7時に新着お宝リストを更新
+          </p>
           <div style={{ marginTop: 8 }}>
-            <StreakBadge />
+            <StreakBadge streakCount={streakCount} totalPoints={totalPoints} />
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-          <SyncStatusBadge lastSyncedAt="2026-03-23T00:00:00Z" isActive={true} />
+          <ShareProfitButton savedItems={MOCK_SAVED_ITEMS} />
           <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("MerFreeeでメルカリShops×会計連携を自動化中！インボイス対応PDFも自動生成 #MerFreee #メルカリShops https://merfreee.vercel.app")}`}
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('越境アービトラージでeBay×メルカリの価格差情報を活用中！AIが毎日お宝を発掘してくれます #越境アービトラージ #副業 https://ecross-arbitrage.vercel.app')}`}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="MerFreeeを使ったことをXにシェアする"
+            aria-label="越境アービトラージを使ったことをXにシェアする"
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
               fontSize: 12,
               padding: '6px 14px',
               background: 'rgba(0,0,0,0.7)',
@@ -40,12 +140,6 @@ export default function DashboardPage() {
               borderRadius: 8,
               textDecoration: 'none',
               border: '1px solid rgba(255,255,255,0.15)',
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
-              transition: 'background 0.2s',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
               minHeight: 44,
             }}
           >
@@ -54,62 +148,96 @@ export default function DashboardPage() {
             </svg>
             Xでシェア
           </a>
-          <form action="/api/sync" method="POST">
-            <button
-              type="submit"
-              aria-label="メルカリShopsの売上データを今すぐ同期する"
-              className="btn-primary"
-              style={{ fontSize: 14, padding: '8px 16px' }}
-            >
-              今すぐ同期
-            </button>
-          </form>
         </div>
       </div>
 
-      <KpiCard data={mockKpiData} />
-
-      <div style={{ marginTop: 32 }}>
-        <h2 style={{ color: 'white', fontSize: 18, fontWeight: 600, marginBottom: 16 }}>最近の取引</h2>
-        <div className="glass-card-enhanced backdrop-blur-sm" style={{ padding: 0, overflow: 'hidden' }}>
-          <table
-            style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}
-            role="table"
-            aria-label="最近の取引一覧"
+      {/* Category filter tabs */}
+      <nav aria-label="カテゴリフィルタ" style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
+        {CATEGORY_TABS.map((tab) => (
+          <button
+            key={tab.id}
+            aria-label={`${tab.label}カテゴリのお宝を表示する`}
+            aria-pressed={tab.id === 'all'}
+            style={{
+              background: tab.id === 'all' ? '#F59E0B' : 'rgba(15,23,42,0.85)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: `1px solid ${tab.id === 'all' ? '#F59E0B' : 'rgba(245,158,11,0.2)'}`,
+              borderRadius: 8,
+              color: 'white',
+              fontSize: 14,
+              fontWeight: 600,
+              padding: '8px 16px',
+              cursor: 'pointer',
+              minHeight: 44,
+            }}
           >
-            <thead>
-              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                {['商品名', '金額', '税率', '販売日', '弥生', 'freee'].map((h) => (
-                  <th key={h} scope="col" style={{ padding: '12px 16px', textAlign: 'left', color: 'rgba(255,255,255,0.5)', fontWeight: 600, fontSize: 12 }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { name: 'ノートパソコン（テスト商品）', amount: 50000, taxRate: 10, soldAt: '2026-03-01', yayoi: true, freee: true },
-                { name: 'デジタルカメラ（テスト商品）', amount: 35000, taxRate: 10, soldAt: '2026-03-10', yayoi: true, freee: false },
-                { name: 'スマートウォッチ（テスト商品）', amount: 25000, taxRate: 10, soldAt: '2026-03-15', yayoi: false, freee: false },
-              ].map((tx, i) => (
-                <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                  <td style={{ padding: '12px 16px', color: 'white' }}>{tx.name}</td>
-                  <td style={{ padding: '12px 16px', color: 'white', fontWeight: 600 }}>¥{tx.amount.toLocaleString()}</td>
-                  <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)' }}>{tx.taxRate}%</td>
-                  <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)' }}>{tx.soldAt}</td>
-                  <td style={{ padding: '12px 16px' }}>
-                    <span aria-label={tx.yayoi ? '弥生同期済み' : '弥生未同期'} style={{ color: tx.yayoi ? '#10B981' : '#F59E0B', fontSize: 12 }}>
-                      {tx.yayoi ? '済' : '未'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '12px 16px' }}>
-                    <span aria-label={tx.freee ? 'freee同期済み' : 'freee未同期'} style={{ color: tx.freee ? '#10B981' : '#F59E0B', fontSize: 12 }}>
-                      {tx.freee ? '済' : '未'}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Treasure cards grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+          gap: 24,
+        }}
+        role="list"
+        aria-label="今日のお宝リスト"
+      >
+        {items.map((item, index) => (
+          <div key={item.id} role="listitem" style={{ position: 'relative' }}>
+            {/* Free plan: 4件目以降はぼかしオーバーレイ */}
+            {index >= 3 && (
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  background: 'rgba(15,23,42,0.7)',
+                  borderRadius: 16,
+                  zIndex: 10,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 12,
+                }}
+                aria-label="このアイテムはStandardプラン以上でご覧いただけます"
+              >
+                <svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <p style={{ color: 'white', fontSize: 14, fontWeight: 600, textAlign: 'center' }}>
+                  Standardプランで全件表示
+                </p>
+                <a
+                  href="/pricing"
+                  aria-label="プランをアップグレードしてすべてのお宝を見る"
+                  style={{
+                    background: '#F59E0B',
+                    color: 'white',
+                    borderRadius: 8,
+                    padding: '8px 20px',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    fontSize: 14,
+                    minHeight: 44,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  プランを確認する
+                </a>
+              </div>
+            )}
+            <TreasureCard item={item} />
+          </div>
+        ))}
       </div>
     </div>
   );

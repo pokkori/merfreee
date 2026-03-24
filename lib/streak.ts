@@ -1,111 +1,111 @@
-/**
- * ストリーク管理モジュール（全ゲーム共通）
- * - 7日連続プレイでボーナス / 1日スキップ可能なシールド機能
- * - D7リテンション +25%, D30 +18% (AppsFlyer 2024 実測値)
- */
+import { createClient } from '@supabase/supabase-js';
 
-export interface StreakData {
-  count: number;
-  lastPlayDate: string;   // 'YYYY-MM-DD'
-  shieldCount: number;    // 無料シールド残数（週1回補充）
-  longestStreak: number;
-  totalDays: number;      // 累計プレイ日数
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
 }
 
-const DEFAULT_STREAK: StreakData = {
-  count: 0,
-  lastPlayDate: "",
-  shieldCount: 1,
-  longestStreak: 0,
-  totalDays: 0,
-};
-
-function toDateString(date: Date): string {
-  return date.toISOString().slice(0, 10);
+// JSTの今日の日付を 'YYYY-MM-DD' 形式で返す
+export function getTodayJst(): string {
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return jst.toISOString().slice(0, 10);
 }
 
-function getToday(): string {
-  return toDateString(new Date());
+// 日付差分を日数で返す（JST基準）
+export function diffDays(dateA: string, dateB: string): number {
+  const msA = new Date(dateA).getTime();
+  const msB = new Date(dateB).getTime();
+  return Math.round(Math.abs(msA - msB) / (1000 * 60 * 60 * 24));
 }
 
-function getYesterday(): string {
-  return toDateString(new Date(Date.now() - 86400000));
-}
-
-function getDayBefore(): string {
-  return toDateString(new Date(Date.now() - 172800000));
-}
-
-export function loadStreak(key: string): StreakData {
-  if (typeof window === "undefined") return DEFAULT_STREAK;
-  try {
-    return JSON.parse(localStorage.getItem(`${key}_streak`) ?? "null") ?? { ...DEFAULT_STREAK };
-  } catch {
-    return { ...DEFAULT_STREAK };
+// ストリーク更新ロジック
+export async function updateStreak(userId: string): Promise<{ streak_count: number; points_earned: number }> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return { streak_count: 0, points_earned: 0 };
   }
-}
 
-export function updateStreak(key: string): StreakData {
-  if (typeof window === "undefined") return DEFAULT_STREAK;
-  const today = getToday();
-  const yesterday = getYesterday();
-  const dayBefore = getDayBefore();
-  const data = loadStreak(key);
+  // 1. users テーブルから streak_count・streak_last_date を取得
+  const { data: user, error } = await supabase
+    .from('users')
+    .select('streak_count, streak_last_date, total_points')
+    .eq('id', userId)
+    .single();
 
-  if (data.lastPlayDate === today) return data; // 今日すでに更新済み
+  if (error || !user) {
+    return { streak_count: 0, points_earned: 0 };
+  }
 
-  let newCount = data.count;
-  let newShield = data.shieldCount;
+  const today = getTodayJst();
+  const lastDate = user.streak_last_date as string | null;
+  const currentStreak = user.streak_count as number;
 
-  if (data.lastPlayDate === yesterday) {
-    // 連続継続
-    newCount += 1;
-  } else if (data.lastPlayDate === dayBefore && data.shieldCount > 0) {
-    // 1日休んだがシールドで保護
-    newCount += 1;
-    newShield -= 1;
+  let newStreak = currentStreak;
+  let pointsEarned = 0;
+
+  if (lastDate === today) {
+    // 同日: 変化なし
+    return { streak_count: currentStreak, points_earned: 0 };
+  } else if (lastDate && diffDays(today, lastDate) === 1) {
+    // 翌日ログイン: streak_count + 1
+    newStreak = currentStreak + 1;
   } else {
-    // ストリークリセット
-    newCount = 1;
+    // 2日以上空いた: streak_count = 1
+    newStreak = 1;
   }
 
-  // 週1回シールド補充（月曜日）
-  const todayDate = new Date();
-  if (todayDate.getDay() === 1 && data.shieldCount < 2) {
-    newShield = Math.min(2, newShield + 1);
+  // 3. ポイント計算:
+  pointsEarned += 10; // 毎日ログイン: +10pt
+  if (newStreak === 7) pointsEarned += 50; // 7日連続: +50pt ボーナス
+  if (newStreak === 30) pointsEarned += 200; // 30日連続: +200pt ボーナス
+
+  const newTotalPoints = (user.total_points as number) + pointsEarned;
+
+  // 4. users テーブルを更新
+  await supabase
+    .from('users')
+    .update({
+      streak_count: newStreak,
+      streak_last_date: today,
+      total_points: newTotalPoints,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', userId);
+
+  // 5. { streak_count, points_earned } を返す
+  return { streak_count: newStreak, points_earned: pointsEarned };
+}
+
+// ストリーク取得（表示用）
+export async function getStreakStatus(
+  userId: string
+): Promise<{ streak_count: number; total_points: number; next_bonus_at: number }> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return { streak_count: 0, total_points: 0, next_bonus_at: 7 };
   }
 
-  const updated: StreakData = {
-    count: newCount,
-    lastPlayDate: today,
-    shieldCount: newShield,
-    longestStreak: Math.max(data.longestStreak, newCount),
-    totalDays: (data.totalDays ?? 0) + 1,
-  };
+  const { data: user } = await supabase
+    .from('users')
+    .select('streak_count, total_points')
+    .eq('id', userId)
+    .single();
 
-  try {
-    localStorage.setItem(`${key}_streak`, JSON.stringify(updated));
-  } catch { /* noop */ }
+  const streakCount = (user?.streak_count as number) ?? 0;
+  const totalPoints = (user?.total_points as number) ?? 0;
 
-  return updated;
-}
+  // next_bonus_at: 次のボーナス付与まで何日か
+  let nextBonusAt = 7;
+  if (streakCount >= 30) {
+    nextBonusAt = 30;
+  } else if (streakCount >= 7) {
+    nextBonusAt = 30 - streakCount;
+  } else {
+    nextBonusAt = 7 - streakCount;
+  }
 
-/** ストリークマイルストーンメッセージを取得（Webサービス向け） */
-export function getStreakMilestoneMessage(streak: number): string | null {
-  if (streak === 3) return "3日連続ログイン！";
-  if (streak === 7) return "7日連続達成！週1記帳ゼロ！";
-  if (streak === 14) return "2週間連続！記帳自動化が習慣に！";
-  if (streak === 30) return "30日連続！完全自動化マスター！";
-  return null;
-}
-
-/** 解放機能の取得 */
-export function getUnlockedFeatures(streak: number, totalDays: number) {
-  return {
-    themes: streak >= 2 || totalDays >= 2,
-    difficultySelect: streak >= 3 || totalDays >= 3,
-    challengeMode: streak >= 5 || totalDays >= 5,
-    rareContent: streak >= 7 || totalDays >= 7,
-    premiumContent: totalDays >= 30,
-  };
+  return { streak_count: streakCount, total_points: totalPoints, next_bonus_at: nextBonusAt };
 }

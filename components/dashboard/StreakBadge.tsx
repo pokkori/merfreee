@@ -1,59 +1,44 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { updateStreak, getStreakMilestoneMessage, StreakData } from '@/lib/streak';
+interface StreakBadgeProps {
+  streakCount: number;
+  totalPoints: number;
+}
 
-const STREAK_KEY = 'merfreee';
-
-export function StreakBadge() {
-  const [streak, setStreak] = useState<StreakData | null>(null);
-  const [milestone, setMilestone] = useState<string | null>(null);
-
-  useEffect(() => {
-    const updated = updateStreak(STREAK_KEY);
-    setStreak(updated);
-    setMilestone(getStreakMilestoneMessage(updated.count));
-  }, []);
-
-  if (!streak) return null;
-
+export function StreakBadge({ streakCount, totalPoints }: StreakBadgeProps) {
   return (
     <div
-      aria-label={`連続利用${streak.count}日ストリークバッジ`}
-      role="status"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 8,
-        padding: '6px 14px',
-        borderRadius: 20,
-        background: 'rgba(0,180,216,0.15)',
-        border: '1px solid rgba(0,180,216,0.4)',
-        backdropFilter: 'blur(4px)',
-        WebkitBackdropFilter: 'blur(4px)',
+        gap: 16,
+        background: 'rgba(15,23,42,0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        border: '1px solid rgba(245,158,11,0.2)',
+        borderRadius: 12,
+        padding: '8px 16px',
       }}
+      aria-label={`ストリーク情報: ${streakCount}日連続ログイン、合計${totalPoints}ポイント`}
+      role="status"
     >
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        width={16}
-        height={16}
-        fill="none"
-        stroke="#00B4D8"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-      </svg>
-      <span style={{ color: '#00B4D8', fontWeight: 700, fontSize: 14 }}>
-        {streak.count}日連続
-      </span>
-      {milestone && (
-        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12, marginLeft: 4 }}>
-          {milestone}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </svg>
+        <span style={{ color: '#F59E0B', fontWeight: 700, fontSize: 16 }}>
+          {streakCount}日連続
         </span>
-      )}
+      </div>
+      <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.1)' }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <span style={{ color: 'rgba(248,250,252,0.7)', fontSize: 14 }}>
+          {totalPoints.toLocaleString()}pt
+        </span>
+      </div>
     </div>
   );
 }

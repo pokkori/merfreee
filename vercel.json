@@ -1,8 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/cron/sync",
-      "schedule": "0 15 * * *"
+      "path": "/api/cron/generate-treasures",
+      "schedule": "0 22 * * *"
     }
   ]
 }

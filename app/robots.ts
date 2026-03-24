@@ -5,8 +5,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard/', '/api/', '/settings/', '/billing/', '/transactions/', '/invoices/'],
+      disallow: ['/api/', '/dashboard/'],
     },
-    sitemap: 'https://merfreee.vercel.app/sitemap.xml',
+    sitemap: 'https://ecross-arbitrage.vercel.app/sitemap.xml',
+    host: 'https://ecross-arbitrage.vercel.app',
   };
 }
