@@ -1,6 +1,8 @@
-import { TreasureCard } from '@/components/dashboard/TreasureCard';
 import { DynamicStreakBadge } from '@/components/dashboard/DynamicStreakBadge';
 import { ShareProfitButton } from '@/components/dashboard/ShareProfitButton';
+import { FilterableTreasureList } from '@/components/dashboard/FilterableTreasureList';
+import { DashboardKpiClient } from '@/components/dashboard/DashboardKpiClient';
+import { DailyMission } from '@/components/dashboard/DailyMission';
 import { TreasureItem, SavedItem } from '@/types';
 
 // モックデータ（Supabase未接続時フォールバック）
@@ -91,7 +93,6 @@ async function fetchTreasureItems(): Promise<TreasureItem[]> {
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!url || !key) return MOCK_TREASURE_ITEMS;
 
-    // 動的インポートでサーバー専用クライアントを使用
     const { createServerClient } = await import('@/lib/supabase/server');
     const supabase = createServerClient();
 
@@ -107,21 +108,29 @@ async function fetchTreasureItems(): Promise<TreasureItem[]> {
 
     return data as TreasureItem[];
   } catch {
-    // Supabase未接続時はMOCKデータをフォールバック
     return MOCK_TREASURE_ITEMS;
   }
 }
 
-const CATEGORY_TABS = [
-  { id: 'all', label: 'すべて' },
-  { id: 'anime_figures', label: 'アニメフィギュア' },
-  { id: 'vintage_cameras', label: 'カメラ' },
-  { id: 'game_retro', label: 'レトロゲーム' },
-  { id: 'vinyl_records', label: 'レコード' },
-];
+async function fetchServerStats(items: TreasureItem[]) {
+  const today = new Date().toISOString().slice(0, 10);
+  const todayCount = items.filter((i) => i.created_at.slice(0, 10) === today).length;
+
+  const avgRoi =
+    items.length > 0
+      ? Math.round(items.reduce((sum, i) => sum + i.roi_pct, 0) / items.length)
+      : 0;
+
+  return {
+    today_items_count: todayCount,
+    avg_roi_pct: avgRoi,
+    top_category: null as null,
+  };
+}
 
 export default async function DashboardPage() {
   const items = await fetchTreasureItems();
+  const serverStats = await fetchServerStats(items);
 
   return (
     <div>
@@ -176,94 +185,14 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Category filter tabs */}
-      <nav aria-label="カテゴリフィルタ" style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
-        {CATEGORY_TABS.map((tab) => (
-          <button
-            key={tab.id}
-            aria-label={`${tab.label}カテゴリのお宝を表示する`}
-            aria-pressed={tab.id === 'all'}
-            style={{
-              background: tab.id === 'all' ? '#F59E0B' : 'rgba(15,23,42,0.85)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: `1px solid ${tab.id === 'all' ? '#F59E0B' : 'rgba(245,158,11,0.2)'}`,
-              borderRadius: 8,
-              color: 'white',
-              fontSize: 14,
-              fontWeight: 600,
-              padding: '8px 16px',
-              cursor: 'pointer',
-              minHeight: 44,
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </nav>
+      {/* KPI カード（Client Component: 保存済み件数・ストリークはlocalStorageから取得） */}
+      <DashboardKpiClient serverStats={serverStats} />
 
-      {/* Treasure cards grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: 24,
-        }}
-        role="list"
-        aria-label="今日のお宝リスト"
-      >
-        {items.map((item, index) => (
-          <div key={item.id} role="listitem" style={{ position: 'relative' }}>
-            {/* Free plan: 4件目以降はぼかしオーバーレイ */}
-            {index >= 3 && (
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  background: 'rgba(15,23,42,0.7)',
-                  borderRadius: 16,
-                  zIndex: 10,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 12,
-                }}
-                aria-label="このアイテムはStandardプラン以上でご覧いただけます"
-              >
-                <svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-                <p style={{ color: 'white', fontSize: 14, fontWeight: 600, textAlign: 'center' }}>
-                  Standardプランで全件表示
-                </p>
-                <a
-                  href="/pricing"
-                  aria-label="プランをアップグレードしてすべてのお宝を見る"
-                  style={{
-                    background: '#F59E0B',
-                    color: 'white',
-                    borderRadius: 8,
-                    padding: '8px 20px',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    fontSize: 14,
-                    minHeight: 44,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  プランを確認する
-                </a>
-              </div>
-            )}
-            <TreasureCard item={item} />
-          </div>
-        ))}
-      </div>
+      {/* 今日のミッション（Client Component） */}
+      <DailyMission />
+
+      {/* カテゴリフィルタ＋カード一覧（Client Component） */}
+      <FilterableTreasureList items={items} />
     </div>
   );
 }

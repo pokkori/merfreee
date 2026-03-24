@@ -39,7 +39,6 @@ export default function AlertsPage() {
       }
       setUserId(session.user.id);
 
-      // 既存設定を取得
       const { data } = await supabase
         .from('user_alerts')
         .select('slack_webhook_url, alert_email, profit_threshold_pct')
@@ -82,11 +81,10 @@ export default function AlertsPage() {
     return (
       <div
         style={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          minHeight: 300,
         }}
       >
         <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>読み込み中...</p>
@@ -95,51 +93,26 @@ export default function AlertsPage() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
-        padding: '48px 16px',
-      }}
-    >
-      <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        {/* ヘッダー */}
-        <div style={{ marginBottom: 32 }}>
-          <a
-            href="/dashboard"
-            aria-label="ダッシュボードに戻る"
-            style={{
-              color: 'rgba(255,255,255,0.5)',
-              fontSize: 13,
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              minHeight: 44,
-            }}
-          >
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            ダッシュボードに戻る
-          </a>
-          <h1
-            style={{
-              color: 'white',
-              fontSize: 28,
-              fontWeight: 800,
-              marginTop: 16,
-              marginBottom: 8,
-            }}
-          >
-            価格変動アラート設定
-          </h1>
-          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14 }}>
-            条件に一致したお宝商品を即座にSlackやメールで通知します
-          </p>
-        </div>
+    <div>
+      {/* ヘッダー */}
+      <div style={{ marginBottom: 32 }}>
+        <h1
+          style={{
+            color: 'white',
+            fontSize: 24,
+            fontWeight: 800,
+            marginBottom: 8,
+          }}
+        >
+          価格変動アラート設定
+        </h1>
+        <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14 }}>
+          条件に一致したお宝商品を即座にSlackやメールで通知します
+        </p>
+      </div>
 
-        {/* フォームカード */}
+      {/* フォームカード */}
+      <div style={{ maxWidth: 600 }}>
         <form
           onSubmit={handleSave}
           aria-label="アラート設定フォーム"
@@ -325,13 +298,7 @@ export default function AlertsPage() {
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>
               <span>5%</span>
-              <span
-                style={{
-                  color: '#F59E0B',
-                  fontWeight: 700,
-                  fontSize: 14,
-                }}
-              >
+              <span style={{ color: '#F59E0B', fontWeight: 700, fontSize: 14 }}>
                 {profitThreshold}%
               </span>
               <span>500%</span>
