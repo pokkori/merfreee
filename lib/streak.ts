@@ -1,5 +1,38 @@
 import { createClient } from '@supabase/supabase-js';
 
+// クライアントサイド専用: localStorage でストリークを管理
+export function getStreak(): number {
+  if (typeof window === 'undefined') return 0;
+  const data = JSON.parse(localStorage.getItem('ecross_streak') || '{"count":0,"lastVisit":""}');
+  const today = new Date().toDateString();
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (data.lastVisit === today) return data.count;
+  if (data.lastVisit === yesterday) {
+    const updated = { count: data.count + 1, lastVisit: today };
+    localStorage.setItem('ecross_streak', JSON.stringify(updated));
+    return updated.count;
+  }
+  const reset = { count: 1, lastVisit: today };
+  localStorage.setItem('ecross_streak', JSON.stringify(reset));
+  return 1;
+}
+
+// クライアントサイド専用: localStorage でポイントを取得
+export function getLocalPoints(): number {
+  if (typeof window === 'undefined') return 0;
+  const data = JSON.parse(localStorage.getItem('ecross_streak') || '{"count":0,"lastVisit":"","points":0}');
+  const streak = getStreak();
+  let points = data.points ?? 0;
+  if (data.lastVisit !== new Date().toDateString()) {
+    points += 10;
+    if (streak === 7) points += 50;
+    if (streak === 30) points += 200;
+    const updated = { ...data, points, lastVisit: new Date().toDateString() };
+    localStorage.setItem('ecross_streak', JSON.stringify(updated));
+  }
+  return points;
+}
+
 function getSupabaseAdmin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;

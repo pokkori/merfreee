@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { StreakBadge } from '@/components/dashboard/StreakBadge';
 import { StatsCounter } from '@/components/shared/StatsCounter';
 import { CtaButton } from '@/components/shared/CtaButton';
+import { DynamicStreakBadge } from '@/components/dashboard/DynamicStreakBadge';
+import { ProfitSimulator } from '@/components/ProfitSimulator';
 
 const faqItems = [
   {
@@ -216,9 +217,9 @@ export default function LandingPage() {
               </span>
             </div>
 
-            {/* ストリークバッジ */}
+            {/* ストリークバッジ（動的） */}
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-              <StreakBadge streakCount={7} totalPoints={1250} />
+              <DynamicStreakBadge />
             </div>
 
             <h1
@@ -699,7 +700,7 @@ export default function LandingPage() {
                   <span style={{ color: 'white', fontSize: 36, fontWeight: 800 }}>無料</span>
                 </div>
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px' }}>
-                  {['お宝リスト3件/日', 'カテゴリ1つのみ', 'AI分析なし'].map((f) => (
+                  {['週3商品まで閲覧', 'メール通知なし', 'AI価格分析：なし', 'カテゴリ1つのみ'].map((f) => (
                     <li
                       key={f}
                       style={{
@@ -719,8 +720,8 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/login"
-                  aria-label="Freeプランで始める"
+                  href="/dashboard"
+                  aria-label="まず無料で試す（ダッシュボードへ）"
                   style={{
                     display: 'block',
                     textAlign: 'center',
@@ -735,7 +736,7 @@ export default function LandingPage() {
                     background: 'rgba(255,255,255,0.05)',
                   }}
                 >
-                  無料で始める
+                  まず無料で試す
                 </Link>
               </div>
 
@@ -886,6 +887,127 @@ export default function LandingPage() {
                 </Link>
               </div>
             </div>
+
+            {/* 年間プランセクション */}
+            <div style={{ marginTop: 32 }}>
+              <div style={{ textAlign: 'center', marginBottom: 20 }}>
+                <h3 style={{ color: 'rgba(255,255,255,0.8)', fontSize: 18, fontWeight: 700, marginBottom: 4 }}>
+                  年間プランでさらにお得
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>
+                  月払い比17%割引。まとめて払うだけで毎月節約できます。
+                </p>
+              </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                  gap: 24,
+                }}
+              >
+                {/* ライト年間プラン */}
+                <div
+                  aria-label="Standardライト年間プラン（¥19,800/年）"
+                  style={{
+                    background: 'rgba(15,23,42,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(245,158,11,0.3)',
+                    borderRadius: 16,
+                    padding: 28,
+                  }}
+                >
+                  <h4 style={{ color: '#F59E0B', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
+                    Standard 年間
+                  </h4>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+                    <span style={{ color: 'white', fontSize: 32, fontWeight: 800 }}>¥19,800</span>
+                    <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>/年</span>
+                  </div>
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, marginBottom: 20 }}>
+                    ¥1,650/月相当（月払い比17%オフ）
+                  </p>
+                  <Link
+                    href="/login?plan=annual_light"
+                    aria-label="Standardライト年間プランを申し込む"
+                    style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      background: '#F59E0B',
+                      color: 'white',
+                      textDecoration: 'none',
+                      fontSize: 14,
+                      fontWeight: 700,
+                      minHeight: 44,
+                      lineHeight: '44px',
+                      borderRadius: 8,
+                    }}
+                  >
+                    年間プランを申し込む
+                  </Link>
+                </div>
+
+                {/* プロ年間プラン */}
+                <div
+                  aria-label="Proプラン年間（¥49,800/年）最もお得"
+                  style={{
+                    background: 'rgba(15,23,42,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '2px solid #10B981',
+                    borderRadius: 16,
+                    padding: 28,
+                    position: 'relative',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: -12,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: '#10B981',
+                      color: 'white',
+                      fontSize: 12,
+                      fontWeight: 700,
+                      padding: '3px 12px',
+                      borderRadius: 12,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    最もお得
+                  </div>
+                  <h4 style={{ color: '#10B981', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
+                    Pro 年間
+                  </h4>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+                    <span style={{ color: 'white', fontSize: 32, fontWeight: 800 }}>¥49,800</span>
+                    <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>/年</span>
+                  </div>
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, marginBottom: 20 }}>
+                    ¥4,150/月相当（月払い比17%オフ）
+                  </p>
+                  <Link
+                    href="/login?plan=annual_pro"
+                    aria-label="Pro年間プランを申し込む（最もお得）"
+                    style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      background: '#10B981',
+                      color: 'white',
+                      textDecoration: 'none',
+                      fontSize: 14,
+                      fontWeight: 700,
+                      minHeight: 44,
+                      lineHeight: '44px',
+                      borderRadius: 8,
+                    }}
+                  >
+                    年間プランを申し込む
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -931,6 +1053,31 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* 利益シミュレーターセクション */}
+        <section
+          aria-label="利益シミュレーター"
+          style={{ padding: '80px 16px', background: 'rgba(0,0,0,0.15)' }}
+        >
+          <div className="max-w-5xl mx-auto">
+            <div style={{ textAlign: 'center', marginBottom: 40 }}>
+              <h2
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(22px, 4vw, 36px)',
+                  fontWeight: 700,
+                  marginBottom: 12,
+                }}
+              >
+                利益をすぐに計算してみる
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>
+                仕入れ価格・販売価格・手数料率を入力するだけで予想利益がリアルタイムで表示されます
+              </p>
+            </div>
+            <ProfitSimulator />
           </div>
         </section>
 
@@ -1061,7 +1208,22 @@ export default function LandingPage() {
               </nav>
             </div>
           </div>
-          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 20, textAlign: 'center' }}>
+          {/* eBay法的コンプライアンス表記 */}
+          <div
+            role="note"
+            aria-label="eBay価格データに関する免責事項"
+            style={{
+              marginTop: 24,
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+              paddingTop: 16,
+            }}
+          >
+            <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 11, lineHeight: 1.7, margin: 0 }}>
+              ※表示価格はeBay公式APIから取得した参考価格です。実際の取引価格は変動する場合があります。本サービスは利益を保証するものではありません。投資・売買はご自身の判断と責任において行ってください。
+            </p>
+          </div>
+
+          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 12, textAlign: 'center' }}>
             (c) 2026 越境アービトラージ. All rights reserved.
           </p>
         </div>
