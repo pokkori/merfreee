@@ -17,6 +17,7 @@ export default function AlertsPage() {
   }
 
   const [userId, setUserId] = useState<string | null>(null);
+  const [userPlan, setUserPlan] = useState<'free' | 'standard' | 'pro' | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -38,6 +39,14 @@ export default function AlertsPage() {
         return;
       }
       setUserId(session.user.id);
+
+      // プラン確認
+      const { data: profileData } = await supabase
+        .from('user_profiles')
+        .select('plan')
+        .eq('user_id', session.user.id)
+        .single();
+      setUserPlan((profileData?.plan as 'free' | 'standard' | 'pro') ?? 'free');
 
       const { data } = await supabase
         .from('user_alerts')
@@ -88,6 +97,96 @@ export default function AlertsPage() {
         }}
       >
         <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16 }}>読み込み中...</p>
+      </div>
+    );
+  }
+
+  // Proゲート: freeユーザーはアップグレードCTAを表示
+  if (userPlan === 'free') {
+    return (
+      <div>
+        <div style={{ marginBottom: 32 }}>
+          <h1 style={{ color: 'white', fontSize: 24, fontWeight: 800, marginBottom: 8 }}>
+            価格変動アラート設定
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14 }}>
+            条件に一致したお宝商品を即座にSlackやメールで通知します
+          </p>
+        </div>
+        <div
+          role="alert"
+          aria-label="アラート機能はProプラン以上でご利用いただけます"
+          style={{
+            maxWidth: 560,
+            background: 'rgba(15,23,42,0.85)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(232,93,4,0.4)',
+            borderRadius: 16,
+            padding: 32,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+          }}
+        >
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              background: 'rgba(232,93,4,0.15)',
+              border: '1px solid rgba(232,93,4,0.3)',
+              borderRadius: 12,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            aria-hidden="true"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E85D04" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </div>
+          <div>
+            <h2 style={{ color: 'white', fontSize: 18, fontWeight: 800, marginBottom: 8 }}>
+              アラート機能はProプラン以上でご利用いただけます
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.7, margin: 0 }}>
+              Slack・メールアラートでお宝商品の価格差を即座にキャッチ。見逃しゼロで利益機会を最大化できます。Proプランは月額4,980円（7日間無料トライアル付き）です。
+            </p>
+          </div>
+          <a
+            href="/api/komoju/checkout?plan=pro"
+            aria-label="Proプランにアップグレードしてアラート機能を使う（月額4,980円・7日間無料）"
+            style={{
+              display: 'block',
+              textAlign: 'center',
+              minHeight: 44,
+              lineHeight: '44px',
+              background: '#E85D04',
+              color: 'white',
+              borderRadius: 10,
+              fontSize: 14,
+              fontWeight: 700,
+              textDecoration: 'none',
+            }}
+          >
+            Proプランにアップグレード（7日間無料）
+          </a>
+          <a
+            href="/pricing"
+            aria-label="料金プランの詳細を確認する"
+            style={{
+              display: 'block',
+              textAlign: 'center',
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: 13,
+              textDecoration: 'underline',
+            }}
+          >
+            料金プランの詳細を見る
+          </a>
+        </div>
       </div>
     );
   }

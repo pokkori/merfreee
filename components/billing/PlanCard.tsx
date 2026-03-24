@@ -20,7 +20,7 @@ const PLANS: PlanConfig[] = [
     name: 'Starter',
     price: 980,
     color: '#10B981',
-    features: ['メルカリShops連携', '月50件まで同期', '弥生 または freee 連携', 'メール通知'],
+    features: ['AIお宝自動発掘（月10件）', '利益シミュレーター（1日3回）', '8カテゴリ閲覧', 'メール通知'],
   },
   {
     key: 'standard',
@@ -28,14 +28,14 @@ const PLANS: PlanConfig[] = [
     price: 1980,
     color: '#00B4D8',
     recommended: true,
-    features: ['メルカリShops連携', '月500件まで同期', '弥生 + freee 両対応', '適格請求書PDF自動生成', '月次レポートメール'],
+    features: ['AIお宝自動発掘（月50件）', '利益シミュレーター（無制限）', '8カテゴリ全閲覧', 'freee CSV出力', 'メルカリ/eBay価格差分析', 'メールアラート'],
   },
   {
     key: 'pro',
     name: 'Pro',
     price: 4980,
     color: '#E85D04',
-    features: ['メルカリShops連携', '無制限同期', '弥生 + freee 両対応', '適格請求書PDF自動生成', '月次レポートメール', '優先サポート', 'APIアクセス'],
+    features: ['AIお宝自動発掘（無制限・優先更新）', '利益シミュレーター（無制限）', '8カテゴリ全閲覧', 'freee CSV出力', 'メルカリ/eBay価格差分析', 'Slack/メールアラート', '優先サポート'],
   },
 ];
 
