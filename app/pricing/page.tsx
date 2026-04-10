@@ -4,7 +4,7 @@ import { CheckIcon } from 'lucide-react';
 export const metadata: Metadata = {
   title: '料金プラン | 越境アービトラージ',
   description: '越境アービトラージの料金プラン一覧。Free・Standard（月額1,980円）・Pro（月額4,980円）。7日間無料トライアル付き。AIお宝発掘・利益シミュレーター・Slack/メールアラートを活用して副業収入を最大化。',
-  alternates: { canonical: 'https://ecross-arbitrage.vercel.app/pricing' },
+  alternates: { canonical: 'https://merfreee.vercel.app/pricing' },
 };
 
 const MONTHLY_PLANS = [

@@ -1,0 +1,56 @@
+name: Quality Check CI
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: TypeScript check
+        run: npx tsc --noEmit
+      - name: Build check
+        run: npm run build
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NEXT_PUBLIC_SITE_URL: https://example.com
+      - name: Emoji scan
+        run: |
+          if grep -rnP '[🔥😊🎯🚀💡🎉✨🌟💪🎊]' app/ src/ --include="*.tsx" --include="*.ts" 2>/dev/null; then
+            echo "FAIL: Emoji in source"; exit 1
+          fi
+          echo "PASS: No emoji"
+      - name: llms.txt check
+        run: |
+          [ -f "public/llms.txt" ] && echo "PASS: llms.txt exists" || echo "WARNING: public/llms.txt missing"
+
+  claude-review:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Claude PR Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          direct_prompt: |
+            このPRを日本語でレビューしてください。
+            以下の観点で確認し、問題点があればコメントしてください:
+            1. TypeScriptの型安全性
+            2. セキュリティ（XSS・認証・入力バリデーション）
+            3. パフォーマンス（不要なre-render・大きなbundle）
+            4. Next.js 15/16のベストプラクティス準拠
+            問題なければ「LGTM」とコメントしてください。
+          claude_args: "--max-turns 5 --model claude-haiku-4-5-20251001"

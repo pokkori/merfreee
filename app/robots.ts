@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/dashboard/'],
     },
-    sitemap: 'https://ecross-arbitrage.vercel.app/sitemap.xml',
-    host: 'https://ecross-arbitrage.vercel.app',
+    sitemap: 'https://merfreee.vercel.app/sitemap.xml',
+    host: 'https://merfreee.vercel.app',
   };
 }

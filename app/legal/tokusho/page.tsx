@@ -16,7 +16,7 @@ export default function TokushoPage() {
                 { label: '販売業者', value: '越境アービトラージ運営者' },
                 { label: '所在地', value: '請求があった場合は遅滞なく開示します' },
                 { label: '電話番号', value: '請求があった場合は遅滞なく開示します' },
-                { label: 'メールアドレス', value: 'support@ecross-arbitrage.vercel.app' },
+                { label: 'メールアドレス', value: 'support@merfreee.vercel.app' },
                 { label: '運営統括責任者', value: '越境アービトラージ運営責任者' },
                 { label: '役務内容', value: 'メルカリ×eBay価格差情報サービス。AIが毎日発掘する越境EC価格差情報リストの提供、eBay出品推奨データの配信。' },
                 { label: '販売価格', value: 'Freeプラン: 無料\nStandardプラン: 月額1,980円（税込）\nProプラン: 月額4,980円（税込）' },

@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Payment system not configured' }, { status: 503 });
   }
 
-  const baseUrl = process.env.NEXTAUTH_URL ?? 'https://ecross-arbitrage.vercel.app';
+  const baseUrl = process.env.NEXTAUTH_URL ?? 'https://merfreee.vercel.app';
 
   // KOMOJU セッション作成
   const response = await fetch('https://komoju.com/api/v1/sessions', {

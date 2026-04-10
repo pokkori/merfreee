@@ -68,7 +68,7 @@ function generateCanvas(estimatedProfit: number, savedItems: SavedItem[]): Promi
     // 6. フッター
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
     ctx.font = '12px sans-serif';
-    ctx.fillText('越境アービトラージ ecross-arbitrage.vercel.app', 300, 370);
+    ctx.fillText('越境アービトラージ merfreee.vercel.app', 300, 370);
 
     canvas.toBlob((blob) => resolve(blob), 'image/png');
   });
@@ -94,7 +94,7 @@ export function ShareProfitButton({ savedItems }: ShareProfitButtonProps) {
       const estimatedProfit = calculateEstimatedMonthlyProfit(savedItems);
       const blob = await generateCanvas(estimatedProfit, savedItems);
 
-      const text = `越境ECで今月の利益見込み${Math.round(estimatedProfit).toLocaleString()}円！\n\n#越境アービトラージ #副業\nhttps://ecross-arbitrage.vercel.app`;
+      const text = `越境ECで今月の利益見込み${Math.round(estimatedProfit).toLocaleString()}円！\n\n#越境アービトラージ #副業\nhttps://merfreee.vercel.app`;
 
       if (
         blob &&

@@ -107,7 +107,7 @@ export default function OGImage() {
             display: 'flex',
           }}
         >
-          ecross-arbitrage.vercel.app
+          merfreee.vercel.app
         </div>
       </div>
     ),

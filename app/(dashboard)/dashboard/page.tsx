@@ -159,7 +159,7 @@ export default async function DashboardPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
           <ShareProfitButton savedItems={MOCK_SAVED_ITEMS} />
           <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('越境アービトラージでeBay×メルカリの価格差情報を活用中！AIが毎日お宝を発掘してくれます #越境アービトラージ #副業 https://ecross-arbitrage.vercel.app')}`}
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('越境アービトラージでeBay×メルカリの価格差情報を活用中！AIが毎日お宝を発掘してくれます #越境アービトラージ #副業 https://merfreee.vercel.app')}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="越境アービトラージを使ったことをXにシェアする"

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'カテゴリ一覧 | 越境アービトラージ',
   description: '越境アービトラージが対応する8カテゴリ（家電・ファッション・ホビー・スポーツ・おもちゃ・美容・ホーム・書籍）。各カテゴリの平均ROIとリスクレベルを確認して、最適な商品選定に活用。',
-  alternates: { canonical: 'https://ecross-arbitrage.vercel.app/categories' },
+  alternates: { canonical: 'https://merfreee.vercel.app/categories' },
 };
 
 const CATEGORIES = [
